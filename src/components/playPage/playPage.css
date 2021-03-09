@@ -1,0 +1,14 @@
+.messageContainer {
+  border: solid 1px #dbdbdb;
+  margin: 0.5em;
+  height: 30rem;
+  display: block;
+}
+
+.messageContent {
+  height: 73%;
+}
+
+.sendMessageForm {
+  width: 100%;
+}

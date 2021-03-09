@@ -1,0 +1,17 @@
+.createRoomBtn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeContainer {
+  padding-top: 10%;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.createBtn {
+  justify-content: center;
+}

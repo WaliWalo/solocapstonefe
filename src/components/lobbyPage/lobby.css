@@ -1,0 +1,14 @@
+.center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lobbyTitle {
+  font-size: 100px;
+}
+
+.startBtn {
+  font-size: 30px;
+}
