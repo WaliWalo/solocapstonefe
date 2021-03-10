@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import Message from "./Message";
 import Roulette from "./Roulette";
 
@@ -11,9 +11,7 @@ export default function Play() {
         <Col style={{ width: "30rem" }}>
           <Message />
         </Col>
-        <Col>
-          <Roulette />
-        </Col>
+        <Col>{/* <Roulette /> */}</Col>
       </Row>
     </div>
   );

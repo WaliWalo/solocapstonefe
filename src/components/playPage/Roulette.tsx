@@ -1,15 +1,9 @@
 import React from "react";
 import { Wheel } from "react-custom-roulette";
-const data = [
-  { option: "player" },
-  { option: "player" },
-  { option: "player" },
-  { option: "player" },
-  { option: "player" },
-  { option: "player" },
-  { option: "player" },
-];
-export default function Roulette() {
+import { IRouletteProp } from "./types";
+
+export default function Roulette(props: IRouletteProp) {
+  const data = props.players;
   return (
     <div>
       <Wheel
