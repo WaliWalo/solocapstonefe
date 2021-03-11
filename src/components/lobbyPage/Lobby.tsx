@@ -11,6 +11,9 @@ import { IUser } from "./../../utils/types";
 export default function Lobby() {
   const [room, setRoom] = useState<IRoom | null>(null);
   const [players, setPlayers] = useState<Array<IPlayer>>([]);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const history = useHistory();
+
   if (socket) {
     socket.on("roomName", (room: IRoom) => {
       setRoom(room);
@@ -21,9 +24,10 @@ export default function Lobby() {
       fetchRoom(userId.userId);
       room && fetchPlayers(room._id);
     });
+    socket.on("gameStarting", (msg: object) => {
+      history.push("/play");
+    });
   }
-
-  const history = useHistory();
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -31,6 +35,9 @@ export default function Lobby() {
       socket.emit("userConnected", { userId });
       fetchRoom(userId);
       room && fetchPlayers(room._id);
+      if (room && room.started === true) {
+        history.push("/play");
+      }
     } else {
       history.push("/");
     }
@@ -46,7 +53,12 @@ export default function Lobby() {
       if (res !== undefined && res.ok) {
         const users = await res.json();
         const players: Array<IPlayer> = [];
-        users.map((user: IUser) => players.push({ option: user.name }));
+        users.map((user: IUser) => {
+          if (user._id === localStorage.getItem("userId")) {
+            setCurrentUser(user);
+          }
+          return players.push({ option: user.name });
+        });
         setPlayers(players);
       }
     } catch (error) {
@@ -67,6 +79,12 @@ export default function Lobby() {
   };
 
   const handleStart = () => {
+    socket &&
+      room &&
+      socket.emit("startGame", {
+        userId: localStorage.getItem("userId"),
+        roomName: room.roomName,
+      });
     history.push("/play");
   };
 
@@ -75,15 +93,19 @@ export default function Lobby() {
       <div className="center">
         <h1 className="lobbyTitle">{room && room.roomName}</h1>
       </div>
-      {players.length > 0 && <Roulette players={players} />}
+      {players.length > 0 && (
+        <Roulette mustSpin={false} prizeNumber={0} players={players} />
+      )}
       <div className="center">
-        <Button
-          variant="outline-dark"
-          onClick={handleStart}
-          className="mt-3 startBtn"
-        >
-          Start
-        </Button>
+        {currentUser && currentUser.creator && (
+          <Button
+            variant="outline-dark"
+            onClick={handleStart}
+            className="mt-3 startBtn"
+          >
+            Start
+          </Button>
+        )}
       </div>
     </div>
   );

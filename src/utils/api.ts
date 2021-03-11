@@ -34,3 +34,12 @@ export const getRoomByUserId = async (userId: string) => {
     console.log(error);
   }
 };
+
+export const fetchQuestions = async () => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_BE_URL}/questions`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
