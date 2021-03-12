@@ -43,3 +43,14 @@ export const fetchQuestions = async () => {
     console.log(error);
   }
 };
+
+export const fetchMessages = async (roomId: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_BE_URL}/messages/${roomId}`
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

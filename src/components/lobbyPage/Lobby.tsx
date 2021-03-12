@@ -72,6 +72,9 @@ export default function Lobby() {
       if (res !== undefined && res.ok) {
         const room = await res.json();
         setRoom(room);
+        if (room.started) {
+          history.push("/play");
+        }
       }
     } catch (error) {
       console.log(error);

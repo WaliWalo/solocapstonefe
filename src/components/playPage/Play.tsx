@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { socket } from "../../utils/socket";
 import { IPlayer, IRoom, IUserJoin } from "../lobbyPage/types";
-import Message from "./Message";
+import Message from "../message/Message";
 import Roulette from "./Roulette";
 import { IUser } from "./../../utils/types";
 import { getRoomByUserId, getUsersByRoomId } from "../../utils/api";
 import TruthOrDareModal from "./TruthOrDareModal";
 import QuestionsModal from "./QuestionsModal";
 import { useHistory } from "react-router";
+import "./playPage.css";
 
 export default function Play() {
   const [room, setRoom] = useState<IRoom | null>(null);
@@ -40,6 +41,11 @@ export default function Play() {
           room && fetchPlayers(room._id);
         }
       );
+      socket.on("userLeft", () => {
+        const userId = localStorage.getItem("userId");
+        userId && fetchRoom(userId);
+        room && fetchPlayers(room._id);
+      });
       fetchRoom(userId);
       room && fetchPlayers(room._id);
     }
@@ -54,7 +60,7 @@ export default function Play() {
 
   useEffect(() => {
     if (currentUser !== null) {
-      socket &&
+      if (socket) {
         socket.on("onSelect", (selection: string) => {
           setSelection(selection);
           if (currentUser && currentUser.turn) {
@@ -63,6 +69,11 @@ export default function Play() {
             alert(selection);
           }
         });
+        socket.on("gameEnded", () => {
+          localStorage.removeItem("userId");
+          history.push("/");
+        });
+      }
     }
   }, [currentUser]);
 
@@ -146,15 +157,27 @@ export default function Play() {
   };
 
   const handleLeaveGame = () => {
+    socket &&
+      currentUser &&
+      room &&
+      socket.emit("leaveRoom", {
+        userId: currentUser._id,
+        roomName: room.roomName,
+      });
     localStorage.removeItem("userId");
     history.push("/");
   };
 
   return (
     <div className="display-flex">
+      <Row className="playHeader">
+        <h2>{room && room.roomName}</h2>
+      </Row>
       <Row>
         <Col style={{ width: "30rem" }}>
-          <Message />
+          {room && currentUser && (
+            <Message room={room} userId={currentUser._id} />
+          )}
         </Col>
         <Col>
           <Roulette
