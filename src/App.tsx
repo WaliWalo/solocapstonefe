@@ -17,7 +17,7 @@ function App() {
     }
   }, []);
   return (
-    <div className="App">
+    <div className="App ripple-background circle">
       <Route path="/" exact render={(props) => <Home />} />
       <Route path="/lobby" exact render={(props) => <Lobby />} />
       <Route path="/play" exact render={(props) => <Play />} />

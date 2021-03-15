@@ -1,3 +1,4 @@
+import { IUser } from "../../utils/types";
 import { IPlayer } from "../lobbyPage/types";
 
 export interface IRouletteProp {
@@ -19,6 +20,13 @@ export interface IQuestionsModalProp {
   selection: string;
   roomName: string;
   userId: string;
+}
+
+export interface IPlayersModalProp {
+  show: boolean;
+  onHide: () => void;
+  players: Array<IUser>;
+  roomName: string;
 }
 
 export interface IQuestion {

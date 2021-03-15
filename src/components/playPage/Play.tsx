@@ -10,6 +10,7 @@ import TruthOrDareModal from "./TruthOrDareModal";
 import QuestionsModal from "./QuestionsModal";
 import { useHistory } from "react-router";
 import "./playPage.css";
+import PlayersModal from "./PlayersModal";
 
 export default function Play() {
   const [room, setRoom] = useState<IRoom | null>(null);
@@ -21,6 +22,9 @@ export default function Play() {
   const [mustSpin, setMustSpin] = useState(false);
   const [questionsModal, setQuestionsModal] = useState<boolean>(false);
   const [selection, setSelection] = useState<string>("");
+  const [playersModal, setPlayersModal] = useState<boolean>(false);
+  const [playersDetails, setPlayersDetails] = useState([]);
+
   const history = useHistory();
   if (socket) {
     socket.on("userJoined", (userId: IUserJoin) => {
@@ -41,10 +45,15 @@ export default function Play() {
           room && fetchPlayers(room._id);
         }
       );
-      socket.on("userLeft", () => {
-        const userId = localStorage.getItem("userId");
-        userId && fetchRoom(userId);
-        room && fetchPlayers(room._id);
+      socket.on("userLeft", ({ userId }: { userId: string }) => {
+        const currentUserId = localStorage.getItem("userId");
+        if (userId === currentUserId) {
+          localStorage.removeItem("userId");
+          history.push("/");
+        } else {
+          currentUserId && fetchRoom(currentUserId);
+          room && fetchPlayers(room._id);
+        }
       });
       fetchRoom(userId);
       room && fetchPlayers(room._id);
@@ -61,7 +70,7 @@ export default function Play() {
   useEffect(() => {
     if (currentUser !== null) {
       if (socket) {
-        socket.on("onSelect", (selection: string) => {
+        socket.once("onSelect", (selection: string) => {
           setSelection(selection);
           if (currentUser && currentUser.turn) {
             setQuestionsModal(true);
@@ -79,7 +88,7 @@ export default function Play() {
 
   useEffect(() => {
     if (socket) {
-      socket.on("selectedUser", (user: IUser) => {
+      socket.once("selectedUser", (user: IUser) => {
         if (players.length !== 0) {
           const selectedPlayerIndex = players.findIndex(
             (player) => player.option === user.name
@@ -87,7 +96,8 @@ export default function Play() {
           setPrizeNumber(selectedPlayerIndex);
           setMustSpin(true);
           setTimeout(function () {
-            if (currentUser) {
+            if (currentUser !== null) {
+              console.log(currentUser);
               if (user._id === currentUser._id) {
                 setShowModal(true);
               } else {
@@ -98,7 +108,7 @@ export default function Play() {
         }
       });
     }
-  }, [currentUser, players]);
+  }, [currentUser, players.length]);
 
   const fetchPlayers = async (roomId: string) => {
     try {
@@ -115,6 +125,7 @@ export default function Play() {
           }
           return players.push({ option: user.name });
         });
+        setPlayersDetails(users);
         setPlayers(players);
       }
     } catch (error) {
@@ -197,7 +208,12 @@ export default function Play() {
       </Row>
       <Row>
         {currentUser && currentUser.creator ? (
-          <Button onClick={handleEndGame}>END GAME</Button>
+          <>
+            <Button onClick={handleEndGame} className="mr-3">
+              END GAME
+            </Button>
+            <Button onClick={() => setPlayersModal(true)}>Kick Player</Button>
+          </>
         ) : (
           <Button onClick={handleLeaveGame}>LEAVE GAME</Button>
         )}
@@ -218,6 +234,12 @@ export default function Play() {
               userId={currentUser._id}
             />
           )}
+          <PlayersModal
+            show={playersModal}
+            onHide={() => setPlayersModal(false)}
+            players={playersDetails}
+            roomName={room.roomName}
+          ></PlayersModal>
         </>
       )}
     </div>

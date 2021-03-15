@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Modal, Row } from "react-bootstrap";
+import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { Form, FormControl, InputGroup } from "react-bootstrap";
 import "./home.css";
 import { createUser, getRoomByUserId } from "./../../utils/api";
 import { useHistory } from "react-router";
 import { socket } from "../../utils/socket";
 import { IHomeJoinMessage } from "./types";
-
+import { useSprings, animated, interpolate } from "react-spring";
+import { useGesture } from "react-use-gesture";
+import Cards from "./Cards";
 export default function Home() {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
@@ -78,7 +80,7 @@ export default function Home() {
     <div className="homeContainer">
       <Form onSubmit={(e) => handleJoin(e)}>
         <Row>
-          <Col xs={8}>
+          <Col md={8} xs={12}>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
                 <InputGroup.Text id="basic-addon2">Name</InputGroup.Text>
@@ -104,7 +106,11 @@ export default function Home() {
               />
             </InputGroup>
           </Col>
-          <Col xs={4} className="d-flex ">
+          <Col
+            md={4}
+            xs={12}
+            className="d-flex justify-content-center mt-3 mt-sm-0"
+          >
             <Button variant="outline-dark" type="submit" className="ml-3">
               Join Room
             </Button>
@@ -149,6 +155,9 @@ export default function Home() {
                 </Col>
               </InputGroup>
             </Row>
+            {/* <Container id="cardContainer">
+              <Cards />
+            </Container> */}
             <Row className="mt-3 createBtn">
               <Button variant="outline-dark" type="submit">
                 Start Game
