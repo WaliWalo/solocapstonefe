@@ -9,8 +9,11 @@ import { getRoomByUserId, getUsersByRoomId } from "../../utils/api";
 import TruthOrDareModal from "./TruthOrDareModal";
 import QuestionsModal from "./QuestionsModal";
 import { useHistory } from "react-router";
-import "./playPage.css";
 import PlayersModal from "./PlayersModal";
+import { gsap } from "gsap";
+import { Draggable } from "gsap/Draggable";
+import "./playPage.css";
+import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 
 export default function Play() {
   const [room, setRoom] = useState<IRoom | null>(null);
@@ -24,6 +27,7 @@ export default function Play() {
   const [selection, setSelection] = useState<string>("");
   const [playersModal, setPlayersModal] = useState<boolean>(false);
   const [playersDetails, setPlayersDetails] = useState([]);
+  const [messagePopOut, setMessagePopOut] = useState(false);
 
   const history = useHistory();
   if (socket) {
@@ -179,69 +183,137 @@ export default function Play() {
     history.push("/");
   };
 
+  gsap.registerPlugin(Draggable);
+  Draggable.create("#spin", {
+    type: "x,y",
+    bounds: document.getElementById("root"),
+    onClick: function () {
+      console.log("clicked");
+    },
+    onRelease: function () {
+      gsap.to("#spin", {
+        x: 0,
+        y: 0,
+        duration: 1,
+        ease: "elastic.out(1,0.3)",
+      });
+      handleSpin();
+    },
+  });
+
+  const handleMessagePopOut = () => {
+    setMessagePopOut(!messagePopOut);
+    let x = "-30vw";
+    console.log(window.innerWidth);
+    if (window.innerWidth <= 768) {
+      x = "-80vw";
+    }
+    messagePopOut
+      ? gsap.to("#messageArrowBlock", { duration: 0.5, ease: "none", x: "0" })
+      : gsap.to("#messageArrowBlock", {
+          duration: 0.5,
+          ease: "none",
+          x,
+        });
+  };
+
   return (
-    <div className="display-flex">
-      <Row className="playHeader">
-        <h2>{room && room.roomName}</h2>
-      </Row>
-      <Row>
-        <Col style={{ width: "30rem" }}>
-          {room && currentUser && (
-            <Message room={room} userId={currentUser._id} />
-          )}
-        </Col>
-        <Col>
-          <Roulette
-            prizeNumber={prizeNumber}
-            mustSpin={mustSpin}
-            stopSpin={() => setMustSpin(false)}
-            players={players}
-          />
-          <div className="center">
-            {currentUser && currentUser.turn ? (
-              <Button onClick={handleSpin}>Spin</Button>
-            ) : (
-              <h3>{userTurn && userTurn.name}'s turn</h3>
+    <>
+      <div className="display-flex">
+        <Row className="playHeader">
+          <h2>{room && room.roomName}</h2>
+        </Row>
+        <Row>
+          {/* <Col style={{ width: "30rem" }}>
+            {room && currentUser && (
+              <Message room={room} userId={currentUser._id} />
             )}
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        {currentUser && currentUser.creator ? (
+          </Col> */}
+          <Col>
+            <Roulette
+              prizeNumber={prizeNumber}
+              mustSpin={mustSpin}
+              stopSpin={() => setMustSpin(false)}
+              players={players}
+            />
+            <div className="center">
+              {currentUser && currentUser.turn ? (
+                <>
+                  <div id="spin"></div>
+                </>
+              ) : (
+                <h3>{userTurn && userTurn.name}'s turn</h3>
+              )}
+            </div>
+          </Col>
+        </Row>
+        <Row className="options mt-3">
+          {currentUser && currentUser.creator ? (
+            <>
+              <Button
+                variant="outline-dark"
+                onClick={handleEndGame}
+                className="mr-3"
+              >
+                END GAME
+              </Button>
+              <Button
+                variant="outline-dark"
+                onClick={() => setPlayersModal(true)}
+              >
+                Kick Player
+              </Button>
+            </>
+          ) : (
+            <Button onClick={handleLeaveGame}>LEAVE GAME</Button>
+          )}
+        </Row>
+        {room && (
           <>
-            <Button onClick={handleEndGame} className="mr-3">
-              END GAME
-            </Button>
-            <Button onClick={() => setPlayersModal(true)}>Kick Player</Button>
+            <TruthOrDareModal
+              roomName={room.roomName}
+              show={showModal}
+              onHide={() => setShowModal(false)}
+            />{" "}
+            {currentUser && currentUser._id !== undefined && (
+              <QuestionsModal
+                selection={selection}
+                show={questionsModal}
+                onHide={() => setQuestionsModal(false)}
+                roomName={room.roomName}
+                userId={currentUser._id}
+              />
+            )}
+            <PlayersModal
+              show={playersModal}
+              onHide={() => setPlayersModal(false)}
+              players={playersDetails}
+              roomName={room.roomName}
+            ></PlayersModal>
+          </>
+        )}
+      </div>
+      <div id="messageArrowBlock">
+        {messagePopOut ? (
+          <>
+            <div className="arrowContainer" onClick={handleMessagePopOut}>
+              <ArrowRight className="messageArrow" size={20} />
+            </div>
+            {room && currentUser && (
+              <Message room={room} userId={currentUser._id} />
+            )}
           </>
         ) : (
-          <Button onClick={handleLeaveGame}>LEAVE GAME</Button>
+          <>
+            <div className="arrowContainer" onClick={handleMessagePopOut}>
+              <ArrowLeft className="messageArrow" size={20} />
+            </div>
+            {room && currentUser && (
+              <Message room={room} userId={currentUser._id} />
+            )}
+          </>
         )}
-      </Row>
-      {room && (
-        <>
-          <TruthOrDareModal
-            roomName={room.roomName}
-            show={showModal}
-            onHide={() => setShowModal(false)}
-          />{" "}
-          {currentUser && currentUser._id !== undefined && (
-            <QuestionsModal
-              selection={selection}
-              show={questionsModal}
-              onHide={() => setQuestionsModal(false)}
-              roomName={room.roomName}
-              userId={currentUser._id}
-            />
-          )}
-          <PlayersModal
-            show={playersModal}
-            onHide={() => setPlayersModal(false)}
-            players={playersDetails}
-            roomName={room.roomName}
-          ></PlayersModal>
-        </>
-      )}
-    </div>
+      </div>
+    </>
   );
 }

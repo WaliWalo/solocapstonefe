@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Modal, Row } from "react-bootstrap";
+import { Button, Col, Modal, Row } from "react-bootstrap";
 import { Form, FormControl, InputGroup } from "react-bootstrap";
 import "./home.css";
 import { createUser, getRoomByUserId } from "./../../utils/api";
 import { useHistory } from "react-router";
 import { socket } from "../../utils/socket";
 import { IHomeJoinMessage } from "./types";
-import { useSprings, animated, interpolate } from "react-spring";
-import { useGesture } from "react-use-gesture";
-import Cards from "./Cards";
+
 export default function Home() {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");

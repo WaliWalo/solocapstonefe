@@ -11,3 +11,7 @@ export interface IPlayer {
 export interface IUserJoin {
   userId: string;
 }
+
+export interface ILobbyPlayersProps {
+  players: IPlayer[];
+}

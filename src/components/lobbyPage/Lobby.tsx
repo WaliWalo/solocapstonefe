@@ -7,6 +7,7 @@ import { IPlayer, IRoom, IUserJoin } from "./types";
 import { useHistory } from "react-router";
 import { getRoomByUserId, getUsersByRoomId } from "./../../utils/api";
 import { IUser } from "./../../utils/types";
+import Players from "./Players";
 
 export default function Lobby() {
   const [room, setRoom] = useState<IRoom | null>(null);
@@ -96,9 +97,10 @@ export default function Lobby() {
       <div className="center">
         <h1 className="lobbyTitle">{room && room.roomName}</h1>
       </div>
-      {players.length > 0 && (
+      {players.length > 0 && <Players players={players} />}
+      {/* {players.length > 0 && (
         <Roulette mustSpin={false} prizeNumber={0} players={players} />
-      )}
+      )} */}
       <div className="center">
         {currentUser && currentUser.creator && (
           <Button

@@ -1,8 +1,11 @@
 .messageContainer {
-  border: solid 1px #dbdbdb;
-  margin: 0.5em;
+  border: solid 1px #000000;
   height: 30rem;
   display: block;
+  width: 100%;
+  border-radius:30px;
+  padding:20px;
+  background-color:rgb(255, 255, 255)
 }
 
 .messageContent {

@@ -30,6 +30,7 @@ export default function PlayersModal(props: IPlayersModalProp) {
                   >
                     {player.name}
                     <Button
+                      variant="outline-dark"
                       id={player._id}
                       onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
                         handleKick(e)

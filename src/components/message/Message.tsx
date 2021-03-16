@@ -53,10 +53,10 @@ export default function Message(props: IMessageProp) {
   };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <Container className="messageContainer">
         <Row>
-          <h3 className="ml-3 pt-3">Chatbox</h3>
+          <h3 className="ml-3">Chatbox</h3>
         </Row>
         <hr></hr>
         <Row className="messageContent display-block">
