@@ -54,3 +54,18 @@ export const fetchMessages = async (roomId: string) => {
     console.log(error);
   }
 };
+
+export const fetchImgUrl = async (file: FileList, roomName: string) => {
+  try {
+    var formdata = new FormData();
+    formdata.append("picture", file[0]);
+    const response = await fetch(
+      `${process.env.REACT_APP_BE_URL}/messages/image/${roomName}`,
+      { method: "POST", body: formdata }
+    );
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

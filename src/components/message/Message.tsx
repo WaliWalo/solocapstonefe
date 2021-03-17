@@ -1,20 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
+  Col,
   Container,
   Form,
   FormControl,
+  Image,
   InputGroup,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import "./message.css";
 import { IMessageProp, IMessage } from "./types";
 import { socket } from "../../utils/socket";
-import { fetchMessages } from "../../utils/api";
+import { fetchImgUrl, fetchMessages } from "../../utils/api";
 
 export default function Message(props: IMessageProp) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Array<IMessage>>([]);
+  const [url, setUrl] = useState("");
+  const [imageLoading, setImageLoading] = useState(false);
+
   const divRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     getMessages();
@@ -48,8 +54,27 @@ export default function Message(props: IMessageProp) {
         message,
         userId: props.userId,
         roomName: props.room.roomName,
+        url,
       });
     setMessage("");
+  };
+
+  const handleFileSelected = async (e: React.FormEvent<HTMLInputElement>) => {
+    setImageLoading(true);
+    const target = e.target as HTMLInputElement;
+    const files = target.files;
+    // const files = Array.from(e.target.files);
+    if (files) {
+      console.log("files:", files[0]);
+      const response = await fetchImgUrl(files, props.room.roomName);
+      if (response) {
+        let url = await response.json();
+        setUrl(url.imageUrl);
+        setImageLoading(false);
+      } else {
+        return response;
+      }
+    }
   };
 
   return (
@@ -74,27 +99,54 @@ export default function Message(props: IMessageProp) {
                   }
                 >
                   {message.content}
+                  {message.url !== "" && (
+                    <Image className="msgImg" src={message.url} rounded />
+                  )}
                 </div>
               </div>
             ))}
           <div ref={divRef} />
         </Row>
         <Row>
-          <Form className="sendMessageForm" onSubmit={(e) => handleSubmit(e)}>
-            <InputGroup className="mb-3">
-              <FormControl
-                placeholder="Message here..."
-                aria-label="Message here"
-                value={message}
-                onChange={(e) => setMessage(e.currentTarget.value)}
-              />
-              <InputGroup.Append>
+          {imageLoading ? (
+            <div className="msgLoader">
+              <Spinner animation="grow" />
+            </div>
+          ) : (
+            <Form className="sendMessageForm" onSubmit={(e) => handleSubmit(e)}>
+              <Row>
+                <Col xs={10} className="pr-0">
+                  <InputGroup className="mb-3">
+                    <FormControl
+                      placeholder="Message here..."
+                      aria-label="Message here"
+                      value={message}
+                      onChange={(e) => setMessage(e.currentTarget.value)}
+                    />
+                    {/* <InputGroup.Append>
                 <Button variant="outline-secondary" type="submit">
                   Send
                 </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
+              </InputGroup.Append> */}
+                  </InputGroup>
+                </Col>
+                <Col xs={2} className="pl-0">
+                  <Form.File id="formcheck-api-custom" custom>
+                    <Form.File
+                      id="custom-file-translate-scss"
+                      label="Custom file input"
+                      lang="en"
+                      custom
+                      accept="image/*"
+                      onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                        handleFileSelected(e)
+                      }
+                    />
+                  </Form.File>
+                </Col>
+              </Row>
+            </Form>
+          )}
         </Row>
       </Container>
     </div>

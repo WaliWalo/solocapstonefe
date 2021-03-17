@@ -28,6 +28,7 @@ export default function Play() {
   const [playersModal, setPlayersModal] = useState<boolean>(false);
   const [playersDetails, setPlayersDetails] = useState([]);
   const [messagePopOut, setMessagePopOut] = useState(false);
+  const [alerts, setAlerts] = useState("");
 
   const history = useHistory();
   if (socket) {
@@ -44,7 +45,24 @@ export default function Play() {
       socket.on(
         "onQuestionSelect",
         ({ question, nextUser }: { question: string; nextUser: IUser }) => {
-          alert(question);
+          setAlerts(question);
+          gsap.set(".alerts", { clearProps: "x" });
+          gsap.to(".alerts", {
+            duration: 3,
+            ease: "power2.out",
+            y: -400,
+            opacity: 1,
+          });
+
+          setTimeout(() => {
+            gsap.to(".alerts", {
+              duration: 3,
+              ease: "power2.out",
+              x: 500,
+              rotation: 50,
+              opacity: 0,
+            });
+          }, 3000);
           fetchRoom(userId);
           room && fetchPlayers(room._id);
         }
@@ -79,7 +97,24 @@ export default function Play() {
           if (currentUser && currentUser.turn) {
             setQuestionsModal(true);
           } else {
-            alert(selection);
+            setAlerts(selection);
+            gsap.set(".alerts", { clearProps: "x" });
+            gsap.to(".alerts", {
+              duration: 3,
+              ease: "power2.out",
+              y: -400,
+              opacity: 1,
+            });
+
+            setTimeout(() => {
+              gsap.to(".alerts", {
+                duration: 3,
+                ease: "power2.out",
+                x: 500,
+                rotation: 50,
+                opacity: 0,
+              });
+            }, 3000);
           }
         });
         socket.on("gameEnded", () => {
@@ -105,7 +140,25 @@ export default function Play() {
               if (user._id === currentUser._id) {
                 setShowModal(true);
               } else {
-                alert(user.name);
+                // gsap.set("#spin", { clearProps: "x,y" });
+                gsap.set(".alerts", { clearProps: "x" });
+                gsap.to(".alerts", {
+                  duration: 3,
+                  ease: "power2.out",
+                  y: -400,
+                  opacity: 1,
+                });
+                setAlerts(user.name);
+                // alert(user.name);
+                setTimeout(() => {
+                  gsap.to(".alerts", {
+                    duration: 3,
+                    ease: "power2.out",
+                    x: 500,
+                    rotation: 50,
+                    opacity: 0,
+                  });
+                }, 3000);
               }
             }
           }, 12000);
@@ -224,11 +277,6 @@ export default function Play() {
           <h2>{room && room.roomName}</h2>
         </Row>
         <Row>
-          {/* <Col style={{ width: "30rem" }}>
-            {room && currentUser && (
-              <Message room={room} userId={currentUser._id} />
-            )}
-          </Col> */}
           <Col>
             <Roulette
               prizeNumber={prizeNumber}
@@ -236,18 +284,18 @@ export default function Play() {
               stopSpin={() => setMustSpin(false)}
               players={players}
             />
-            <div className="center">
-              {currentUser && currentUser.turn ? (
-                <>
-                  <div id="spin"></div>
-                </>
-              ) : (
-                <h3>{userTurn && userTurn.name}'s turn</h3>
-              )}
-            </div>
           </Col>
         </Row>
-        <Row className="options mt-3">
+        <Row>
+          <div className="center">
+            {currentUser && currentUser.turn ? (
+              <div id="spin"></div>
+            ) : (
+              <h3>{userTurn && userTurn.name}'s turn</h3>
+            )}
+          </div>
+        </Row>
+        <Row className="options mt-2">
           {currentUser && currentUser.creator ? (
             <>
               <Button
@@ -268,6 +316,9 @@ export default function Play() {
             <Button onClick={handleLeaveGame}>LEAVE GAME</Button>
           )}
         </Row>
+        <div className="d-flex justify-content-center">
+          <h1 className="alerts">{alerts}</h1>
+        </div>
         {room && (
           <>
             <TruthOrDareModal
