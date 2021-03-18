@@ -12,16 +12,39 @@
   background-color: red;
   border: solid;
   border-radius: 100px;
-  z-index: 2000;
+  z-index: 999;
 }
 
-.alerts {
+.nameAlerts {
   opacity: 0;
   z-index: 1000;
   color: black;
   font-size: 80px;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: white;
+  position: absolute;
+}
+
+.optionAlerts {
+  opacity: 0;
+  z-index: 1000;
+  color: black;
+  font-size: 80px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+  position: absolute;
+  text-transform: uppercase;
+}
+
+.questionAlerts {
+  opacity: 0;
+  z-index: 1000;
+  color: black;
+  font-size: 50px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+  position: absolute;
+  text-align: center;
 }
 
 #messageArrowBlock {

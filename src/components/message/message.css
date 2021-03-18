@@ -2,6 +2,7 @@
   border: solid 1px #000000;
   height: 30rem;
   display: block;
+  color: black;
   width: 100%;
   border-radius: 30px;
   padding: 20px;
@@ -38,6 +39,16 @@
   padding: 10px;
 }
 
+.adminMsg {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.adminMsg p {
+  text-align: center;
+}
+
 .messageBox {
   padding: 6px 10px;
   border-radius: 6px 0 6px 0;
@@ -45,7 +56,7 @@
   background: rgba(100, 170, 0, 0.1);
   border: 2px solid rgba(100, 170, 0, 0.1);
   color: #6c6c6c;
-  font-size: 12px;
+  font-size: 20px;
   display: grid;
 }
 
@@ -60,7 +71,7 @@
 }
 
 .messageUsername {
-  font-size: 12px;
+  font-size: 20px;
   margin: 0 0 15px;
   color: #30649c;
   align-self: flex-start;

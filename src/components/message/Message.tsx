@@ -14,6 +14,9 @@ import "./message.css";
 import { IMessageProp, IMessage } from "./types";
 import { socket } from "../../utils/socket";
 import { fetchImgUrl, fetchMessages } from "../../utils/api";
+import { IUser } from "../../utils/types";
+import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 export default function Message(props: IMessageProp) {
   const [message, setMessage] = useState("");
@@ -22,22 +25,70 @@ export default function Message(props: IMessageProp) {
   const [imageLoading, setImageLoading] = useState(false);
 
   const divRef = useRef<HTMLDivElement>(null);
+  gsap.registerPlugin(ScrollToPlugin);
+  gsap.to(".messageContent", {
+    duration: 2,
+    scrollTo: { y: "max", autoKill: true },
+  });
+
   useEffect(() => {
     getMessages();
-
-    if (divRef && divRef.current) {
-      divRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    // if (message.length > 0) {
+    //   gsap.to(".messageContent", { duration: 2, scrollTo: 500 });
+    // }
+    // if (divRef && divRef.current) {
+    //   divRef.current.scrollIntoView({ behavior: "smooth" });
+    // }
   }, []);
 
-  socket &&
+  if (socket) {
     socket.on("sendMessage", (message: IMessage) => {
       const newMessages = messages.concat(message);
       setMessages(newMessages);
-      if (divRef && divRef.current) {
-        divRef.current.scrollIntoView({ behavior: "smooth" });
-      }
+
+      // gsap.to(".messageContent", {
+      //   duration: 2,
+      //   scrollTo: { y: "max", autoKill: false },
+      // });
+      // if (divRef && divRef.current) {
+      //   divRef.current.scrollIntoView({ behavior: "smooth" });
+      // }
     });
+    socket.on("selectedUser", (user: IUser) => {
+      const adminMsg = {
+        content: `${user.name} selected`,
+        roomId: props.room._id,
+        sender: user,
+        admin: true,
+      };
+      const newMessages = messages.concat(adminMsg);
+      gsap.delayedCall(13, () => {
+        setMessages(newMessages);
+        gsap.to(".messageContent", {
+          duration: 2,
+          scrollTo: { y: "max", autoKill: true },
+        });
+      });
+    });
+    socket.on(
+      "onQuestionSelect",
+      ({ question, nextUser }: { question: string; nextUser: IUser }) => {
+        const adminMsg = {
+          content: question,
+          roomId: props.room._id,
+          sender: nextUser,
+          admin: true,
+        };
+        const newMessages = messages.concat(adminMsg);
+        setMessages(newMessages);
+
+        gsap.to(".messageContent", {
+          duration: 2,
+          scrollTo: { y: "max", autoKill: true },
+        });
+      }
+    );
+  }
 
   const getMessages = async () => {
     const res = await fetchMessages(props.room._id);
@@ -87,25 +138,35 @@ export default function Message(props: IMessageProp) {
         <Row className="messageContent display-block">
           {messages.length > 0 &&
             messages.map((message) => (
-              <div className="messageBlock" key={message._id}>
-                {message.sender._id !== props.userId && (
-                  <div className="messageUsername">{message.sender.name}</div>
+              <>
+                {!message.admin ? (
+                  <div className="messageBlock" key={message._id}>
+                    {message.sender._id !== props.userId && (
+                      <div className="messageUsername">
+                        {message.sender.name}
+                      </div>
+                    )}
+                    <div
+                      className={
+                        message.sender._id === props.userId
+                          ? "messageBox"
+                          : "messageBox messageSender"
+                      }
+                    >
+                      {message.content}
+                      {message.url !== "" && (
+                        <Image className="msgImg" src={message.url} rounded />
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="adminMsg">
+                    <p>{message.content}</p>
+                  </div>
                 )}
-                <div
-                  className={
-                    message.sender._id === props.userId
-                      ? "messageBox"
-                      : "messageBox messageSender"
-                  }
-                >
-                  {message.content}
-                  {message.url !== "" && (
-                    <Image className="msgImg" src={message.url} rounded />
-                  )}
-                </div>
-              </div>
+              </>
             ))}
-          <div ref={divRef} />
+          <div ref={divRef} className="msgBottom" />
         </Row>
         <Row>
           {imageLoading ? (
@@ -114,7 +175,7 @@ export default function Message(props: IMessageProp) {
             </div>
           ) : (
             <Form className="sendMessageForm" onSubmit={(e) => handleSubmit(e)}>
-              <Row>
+              <Row style={{ width: "100%" }}>
                 <Col xs={10} className="pr-0">
                   <InputGroup className="mb-3">
                     <FormControl
@@ -123,14 +184,9 @@ export default function Message(props: IMessageProp) {
                       value={message}
                       onChange={(e) => setMessage(e.currentTarget.value)}
                     />
-                    {/* <InputGroup.Append>
-                <Button variant="outline-secondary" type="submit">
-                  Send
-                </Button>
-              </InputGroup.Append> */}
                   </InputGroup>
                 </Col>
-                <Col xs={2} className="pl-0">
+                <Col xs={2} className="pr-3">
                   <Form.File id="formcheck-api-custom" custom>
                     <Form.File
                       id="custom-file-translate-scss"

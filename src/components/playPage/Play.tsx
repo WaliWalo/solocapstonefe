@@ -46,8 +46,8 @@ export default function Play() {
         "onQuestionSelect",
         ({ question, nextUser }: { question: string; nextUser: IUser }) => {
           setAlerts(question);
-          gsap.set(".alerts", { clearProps: "x" });
-          gsap.to(".alerts", {
+          gsap.set(".questionAlerts", { clearProps: "x" });
+          gsap.to(".questionAlerts", {
             duration: 3,
             ease: "power2.out",
             y: -400,
@@ -55,7 +55,7 @@ export default function Play() {
           });
 
           setTimeout(() => {
-            gsap.to(".alerts", {
+            gsap.to(".questionAlerts", {
               duration: 3,
               ease: "power2.out",
               x: 500,
@@ -98,8 +98,8 @@ export default function Play() {
             setQuestionsModal(true);
           } else {
             setAlerts(selection);
-            gsap.set(".alerts", { clearProps: "x" });
-            gsap.to(".alerts", {
+            gsap.set(".optionAlerts", { clearProps: "x" });
+            gsap.to(".optionAlerts", {
               duration: 3,
               ease: "power2.out",
               y: -400,
@@ -107,7 +107,7 @@ export default function Play() {
             });
 
             setTimeout(() => {
-              gsap.to(".alerts", {
+              gsap.to(".optionAlerts", {
                 duration: 3,
                 ease: "power2.out",
                 x: 500,
@@ -128,7 +128,7 @@ export default function Play() {
   useEffect(() => {
     if (socket) {
       socket.once("selectedUser", (user: IUser) => {
-        if (players.length !== 0) {
+        if (players.length > 1) {
           const selectedPlayerIndex = players.findIndex(
             (player) => player.option === user.name
           );
@@ -141,17 +141,17 @@ export default function Play() {
                 setShowModal(true);
               } else {
                 // gsap.set("#spin", { clearProps: "x,y" });
-                gsap.set(".alerts", { clearProps: "x" });
-                gsap.to(".alerts", {
+                gsap.set(".nameAlerts", { clearProps: "x" });
+                gsap.to(".nameAlerts", {
                   duration: 3,
                   ease: "power2.out",
                   y: -400,
                   opacity: 1,
                 });
-                setAlerts(user.name);
+                setAlerts(`${user.name}`);
                 // alert(user.name);
                 setTimeout(() => {
-                  gsap.to(".alerts", {
+                  gsap.to(".nameAlerts", {
                     duration: 3,
                     ease: "power2.out",
                     x: 500,
@@ -240,9 +240,6 @@ export default function Play() {
   Draggable.create("#spin", {
     type: "x,y",
     bounds: document.getElementById("root"),
-    onClick: function () {
-      console.log("clicked");
-    },
     onRelease: function () {
       gsap.to("#spin", {
         x: 0,
@@ -257,7 +254,6 @@ export default function Play() {
   const handleMessagePopOut = () => {
     setMessagePopOut(!messagePopOut);
     let x = "-30vw";
-    console.log(window.innerWidth);
     if (window.innerWidth <= 768) {
       x = "-80vw";
     }
@@ -317,7 +313,13 @@ export default function Play() {
           )}
         </Row>
         <div className="d-flex justify-content-center">
-          <h1 className="alerts">{alerts}</h1>
+          <h1 className="nameAlerts">{alerts}</h1>
+        </div>
+        <div className="d-flex justify-content-center">
+          <h1 className="optionAlerts">{alerts}</h1>
+        </div>
+        <div className="d-flex justify-content-center">
+          <h1 className="questionAlerts">{alerts}</h1>
         </div>
         {room && (
           <>

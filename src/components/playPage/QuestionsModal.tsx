@@ -46,7 +46,7 @@ export default function QuestionsModal(props: IQuestionsModalProp) {
         centered
         backdrop="static"
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>{props.selection.toUpperCase()}</Modal.Title>
         </Modal.Header>
         <Modal.Body>

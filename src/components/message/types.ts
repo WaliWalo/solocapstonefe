@@ -12,4 +12,5 @@ export interface IMessage {
   roomId: string;
   sender: IUser;
   url?: string;
+  admin?: boolean;
 }
