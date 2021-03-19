@@ -1,5 +1,6 @@
 .playHeader {
   justify-content: center;
+  color: black;
 }
 
 .options {
@@ -47,57 +48,21 @@
   text-align: center;
 }
 
-#messageArrowBlock {
-  display: flex;
-  height: 460px;
-  width: 30vw;
-  position: absolute;
-  right: -30vw;
-  z-index: 1000;
-}
-
-@media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  #messageArrowBlock {
-    display: flex;
-    height: 460px;
-    width: 80vw;
-    position: absolute;
-    right: -80vw;
-    z-index: 1000;
-  }
-}
-
-.arrowContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+#msgBubble {
+  z-index: 3000;
   height: 50px;
-  width: 20px;
-  background-color: black;
-  border-radius: 10px 0px 0px 10px;
+  width: 50px;
+  background-color: white;
+  border-radius: 100%;
+  border: 2px solid;
   position: absolute;
-  top: 50%;
-  right: 30vw;
-  z-index: 1000;
+  bottom: 1%;
+  right: 1%;
+  color: black;
 }
 
-@media only screen and (max-width: 768px) {
-  .arrowContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 50px;
-    width: 20px;
-    background-color: black;
-    border-radius: 10px 0px 0px 10px;
-    position: absolute;
-    top: 50%;
-    right: 80vw;
-    z-index: 1000;
-  }
-}
-
-.messageArrow {
-  color: white;
+#chatLogo {
+  font-size: 30px;
+  margin-top: 11px;
+  margin-left: 7px;
 }

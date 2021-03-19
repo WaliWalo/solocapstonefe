@@ -13,7 +13,7 @@ import PlayersModal from "./PlayersModal";
 import { gsap } from "gsap";
 import { Draggable } from "gsap/Draggable";
 import "./playPage.css";
-import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
+import { ChatSquareText } from "react-bootstrap-icons";
 
 export default function Play() {
   const [room, setRoom] = useState<IRoom | null>(null);
@@ -251,18 +251,28 @@ export default function Play() {
     },
   });
 
-  const handleMessagePopOut = () => {
-    setMessagePopOut(!messagePopOut);
-    let x = "-30vw";
-    if (window.innerWidth <= 768) {
-      x = "-80vw";
+  const handleMessageBubble = () => {
+    let width = "300px";
+    let height = "295px";
+    if (window.innerWidth >= 768) {
+      width = "400px";
+      height = "395px";
     }
-    messagePopOut
-      ? gsap.to("#messageArrowBlock", { duration: 0.5, ease: "none", x: "0" })
-      : gsap.to("#messageArrowBlock", {
-          duration: 0.5,
-          ease: "none",
-          x,
+    setMessagePopOut(!messagePopOut);
+    !messagePopOut
+      ? gsap.to("#msgBubble", {
+          duration: 1,
+          ease: "expoScale(1, 2)",
+          height,
+          width,
+          borderRadius: "10%",
+        })
+      : gsap.to("#msgBubble", {
+          duration: 1,
+          ease: "expoScale(1, 2)",
+          height: "50px",
+          width: "50px",
+          borderRadius: "100%",
         });
   };
 
@@ -309,7 +319,9 @@ export default function Play() {
               </Button>
             </>
           ) : (
-            <Button onClick={handleLeaveGame}>LEAVE GAME</Button>
+            <Button variant="outline-dark" onClick={handleLeaveGame}>
+              LEAVE GAME
+            </Button>
           )}
         </Row>
         <div className="d-flex justify-content-center">
@@ -346,26 +358,21 @@ export default function Play() {
           </>
         )}
       </div>
-      <div id="messageArrowBlock">
-        {messagePopOut ? (
-          <>
-            <div className="arrowContainer" onClick={handleMessagePopOut}>
-              <ArrowRight className="messageArrow" size={20} />
-            </div>
-            {room && currentUser && (
-              <Message room={room} userId={currentUser._id} />
-            )}
-          </>
-        ) : (
-          <>
-            <div className="arrowContainer" onClick={handleMessagePopOut}>
-              <ArrowLeft className="messageArrow" size={20} />
-            </div>
-            {room && currentUser && (
-              <Message room={room} userId={currentUser._id} />
-            )}
-          </>
-        )}
+      <div id="msgBubble">
+        <ChatSquareText
+          style={{ display: messagePopOut ? "none" : "" }}
+          onClick={handleMessageBubble}
+          id="chatLogo"
+        />
+        <div style={{ display: !messagePopOut ? "none" : "initial" }}>
+          {room && currentUser && (
+            <Message
+              room={room}
+              userId={currentUser._id}
+              minimize={handleMessageBubble}
+            />
+          )}
+        </div>
       </div>
     </>
   );

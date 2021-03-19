@@ -4,6 +4,7 @@ import { IRoom } from "../lobbyPage/types";
 export interface IMessageProp {
   userId?: string;
   room: IRoom;
+  minimize: () => void;
 }
 
 export interface IMessage {

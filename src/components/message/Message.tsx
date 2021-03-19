@@ -17,6 +17,7 @@ import { fetchImgUrl, fetchMessages } from "../../utils/api";
 import { IUser } from "../../utils/types";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { CardImage } from "react-bootstrap-icons";
 
 export default function Message(props: IMessageProp) {
   const [message, setMessage] = useState("");
@@ -33,26 +34,12 @@ export default function Message(props: IMessageProp) {
 
   useEffect(() => {
     getMessages();
-    // if (message.length > 0) {
-    //   gsap.to(".messageContent", { duration: 2, scrollTo: 500 });
-    // }
-    // if (divRef && divRef.current) {
-    //   divRef.current.scrollIntoView({ behavior: "smooth" });
-    // }
   }, []);
 
   if (socket) {
     socket.on("sendMessage", (message: IMessage) => {
       const newMessages = messages.concat(message);
       setMessages(newMessages);
-
-      // gsap.to(".messageContent", {
-      //   duration: 2,
-      //   scrollTo: { y: "max", autoKill: false },
-      // });
-      // if (divRef && divRef.current) {
-      //   divRef.current.scrollIntoView({ behavior: "smooth" });
-      // }
     });
     socket.on("selectedUser", (user: IUser) => {
       const adminMsg = {
@@ -129,12 +116,12 @@ export default function Message(props: IMessageProp) {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <Container className="messageContainer">
-        <Row>
+        <Row onClick={props.minimize}>
           <h3 className="ml-3">Chatbox</h3>
         </Row>
-        <hr></hr>
+        <hr style={{ margin: 0 }}></hr>
         <Row className="messageContent display-block">
           {messages.length > 0 &&
             messages.map((message) => (
@@ -187,7 +174,11 @@ export default function Message(props: IMessageProp) {
                   </InputGroup>
                 </Col>
                 <Col xs={2} className="pr-3">
-                  <Form.File id="formcheck-api-custom" custom>
+                  <Form.File
+                    id="formcheck-api-custom"
+                    custom
+                    style={{ display: "none" }}
+                  >
                     <Form.File
                       id="custom-file-translate-scss"
                       label="Custom file input"
@@ -199,6 +190,9 @@ export default function Message(props: IMessageProp) {
                       }
                     />
                   </Form.File>
+                  <label htmlFor="custom-file-translate-scss">
+                    <CardImage size={30} className="mt-1" />
+                  </label>
                 </Col>
               </Row>
             </Form>
