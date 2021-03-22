@@ -11,7 +11,7 @@ export default function Roulette(props: IRouletteProp) {
         mustStartSpinning={props.mustSpin}
         prizeNumber={props.prizeNumber}
         data={data}
-        backgroundColors={["black", "red"]}
+        backgroundColors={["red"]}
         textColors={["white"]}
         radiusLineColor="white"
         perpendicularText={true}

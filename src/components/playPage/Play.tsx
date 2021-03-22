@@ -14,6 +14,8 @@ import { gsap } from "gsap";
 import { Draggable } from "gsap/Draggable";
 import "./playPage.css";
 import { ChatSquareText } from "react-bootstrap-icons";
+import PlayerScore from "./PlayerScore";
+import WouldYouRatherModal from "./WouldYouRatherModal";
 
 export default function Play() {
   const [room, setRoom] = useState<IRoom | null>(null);
@@ -29,6 +31,7 @@ export default function Play() {
   const [playersDetails, setPlayersDetails] = useState([]);
   const [messagePopOut, setMessagePopOut] = useState(false);
   const [alerts, setAlerts] = useState("");
+  const [wyrModal, setWyrModal] = useState(false);
 
   const history = useHistory();
   if (socket) {
@@ -63,6 +66,10 @@ export default function Play() {
               opacity: 0,
             });
           }, 3000);
+
+          if (question.slice(0, 16) === "Would you rather") {
+            setWyrModal(true);
+          }
           fetchRoom(userId);
           room && fetchPlayers(room._id);
         }
@@ -92,29 +99,31 @@ export default function Play() {
   useEffect(() => {
     if (currentUser !== null) {
       if (socket) {
-        socket.once("onSelect", (selection: string) => {
+        socket.once("onSelect", ({ selection }: { selection: string }) => {
           setSelection(selection);
-          if (currentUser && currentUser.turn) {
-            setQuestionsModal(true);
-          } else {
-            setAlerts(selection);
-            gsap.set(".optionAlerts", { clearProps: "x" });
-            gsap.to(".optionAlerts", {
-              duration: 3,
-              ease: "power2.out",
-              y: -400,
-              opacity: 1,
-            });
-
-            setTimeout(() => {
+          if (room && room.roomType === "Truth or Dare") {
+            if (currentUser && currentUser.turn) {
+              setQuestionsModal(true);
+            } else {
+              setAlerts(selection);
+              gsap.set(".optionAlerts", { clearProps: "x" });
               gsap.to(".optionAlerts", {
                 duration: 3,
                 ease: "power2.out",
-                x: 500,
-                rotation: 50,
-                opacity: 0,
+                y: -400,
+                opacity: 1,
               });
-            }, 3000);
+
+              setTimeout(() => {
+                gsap.to(".optionAlerts", {
+                  duration: 3,
+                  ease: "power2.out",
+                  x: 500,
+                  rotation: 50,
+                  opacity: 0,
+                });
+              }, 3000);
+            }
           }
         });
         socket.on("gameEnded", () => {
@@ -237,6 +246,7 @@ export default function Play() {
   };
 
   gsap.registerPlugin(Draggable);
+
   Draggable.create("#spin", {
     type: "x,y",
     bounds: document.getElementById("root"),
@@ -248,6 +258,20 @@ export default function Play() {
         ease: "elastic.out(1,0.3)",
       });
       handleSpin();
+    },
+  });
+
+  Draggable.create("#startToggle", {
+    type: "x",
+    bounds: document.getElementById("start"),
+    onRelease: function () {
+      gsap.to("#startToggle", {
+        x: 0,
+        duration: 1,
+        ease: "power2.out(1,0.3)",
+      });
+      setSelection("wyr");
+      setQuestionsModal(true);
     },
   });
 
@@ -284,18 +308,36 @@ export default function Play() {
         </Row>
         <Row>
           <Col>
-            <Roulette
-              prizeNumber={prizeNumber}
-              mustSpin={mustSpin}
-              stopSpin={() => setMustSpin(false)}
-              players={players}
-            />
+            {room && room.roomType === "Truth or Dare" && (
+              <Roulette
+                prizeNumber={prizeNumber}
+                mustSpin={mustSpin}
+                stopSpin={() => setMustSpin(false)}
+                players={players}
+              />
+            )}
+            {room &&
+              room.roomType === "Would You Rather" &&
+              currentUser &&
+              currentUser._id !== undefined && (
+                <PlayerScore room={room} userId={currentUser._id} />
+              )}
           </Col>
         </Row>
         <Row>
           <div className="center">
             {currentUser && currentUser.turn ? (
-              <div id="spin"></div>
+              <>
+                {room && room.roomType === "Truth or Dare" && (
+                  <div id="spin"></div>
+                )}
+                {room && room.roomType === "Would You Rather" && (
+                  <div id="start">
+                    <div id="startToggle"></div>
+                    <span id="startLabel">Drag to start</span>
+                  </div>
+                )}
+              </>
             ) : (
               <h3>{userTurn && userTurn.name}'s turn</h3>
             )}
@@ -335,26 +377,36 @@ export default function Play() {
         </div>
         {room && (
           <>
-            <TruthOrDareModal
-              roomName={room.roomName}
-              show={showModal}
-              onHide={() => setShowModal(false)}
-            />{" "}
             {currentUser && currentUser._id !== undefined && (
-              <QuestionsModal
-                selection={selection}
-                show={questionsModal}
-                onHide={() => setQuestionsModal(false)}
-                roomName={room.roomName}
-                userId={currentUser._id}
-              />
+              <>
+                <QuestionsModal
+                  selection={selection}
+                  show={questionsModal}
+                  onHide={() => setQuestionsModal(false)}
+                  roomName={room.roomName}
+                  userId={currentUser._id}
+                />
+                <TruthOrDareModal
+                  roomName={room.roomName}
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                  userId={currentUser._id}
+                />
+                <WouldYouRatherModal
+                  show={wyrModal}
+                  onHide={() => setWyrModal(false)}
+                  question={alerts}
+                  roomName={room.roomName}
+                  userId={currentUser._id}
+                />
+              </>
             )}
             <PlayersModal
               show={playersModal}
               onHide={() => setPlayersModal(false)}
               players={playersDetails}
               roomName={room.roomName}
-            ></PlayersModal>
+            />
           </>
         )}
       </div>

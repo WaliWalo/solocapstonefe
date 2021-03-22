@@ -10,6 +10,7 @@ export default function TruthOrDareModal(props: ITodModalProp) {
       socket.emit("onSelect", {
         selection: e.currentTarget.id,
         roomName: props.roomName,
+        userId: props.userId,
       });
   };
 

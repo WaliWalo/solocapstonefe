@@ -3,4 +3,5 @@ export interface IUser {
   creator: boolean;
   turn: boolean;
   _id?: string;
+  score?: number;
 }
