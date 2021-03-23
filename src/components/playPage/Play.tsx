@@ -316,12 +316,9 @@ export default function Play() {
                 players={players}
               />
             )}
-            {room &&
-              room.roomType === "Would You Rather" &&
-              currentUser &&
-              currentUser._id !== undefined && (
-                <PlayerScore room={room} userId={currentUser._id} />
-              )}
+            {room && room.roomType === "Would You Rather" && currentUser && (
+              <PlayerScore room={room} user={currentUser} />
+            )}
           </Col>
         </Row>
         <Row>

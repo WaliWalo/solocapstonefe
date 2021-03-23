@@ -69,3 +69,15 @@ export const fetchImgUrl = async (file: FileList, roomName: string) => {
     return error;
   }
 };
+
+export const updateScore = async (userId: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_BE_URL}/users/score/${userId}`,
+      { method: "PUT" }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

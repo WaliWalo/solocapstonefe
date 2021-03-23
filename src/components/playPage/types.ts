@@ -33,7 +33,7 @@ export interface IPlayersModalProp {
 
 export interface IPlayerScoreProp {
   room: IRoom;
-  userId: string;
+  user: IUser;
 }
 
 export interface IWyrProp {

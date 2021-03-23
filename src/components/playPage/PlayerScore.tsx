@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
 import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 import { IPlayerScoreProp } from "./types";
 import { socket } from "../../utils/socket";
 import WouldYouRatherScore from "./WouldYouRatherScore";
+import { updateScore } from "./../../utils/api";
 export default function PlayerScore(props: IPlayerScoreProp) {
   const [selections, setSelections] = useState<Array<string>>([]);
-
+  const [totalAnswered, setTotalAnswered] = useState(0);
+  const [left, setLeft] = useState<Array<string>>([]);
+  const [right, setRight] = useState<Array<string>>([]);
   gsap.registerPlugin(TextPlugin);
 
   if (socket) {
@@ -17,6 +20,11 @@ export default function PlayerScore(props: IPlayerScoreProp) {
         .replace(/[.,/#!$%^&*;:{}=\-_`~()?]/g, "")
         .split(/\bor\b/g);
       setSelections(options);
+      setTotalAnswered(0);
+      setLeft([]);
+      setRight([]);
+      gsap.to("#left", { duration: 1, ease: "expo.out", height: 0 });
+      gsap.to("#right", { duration: 1, ease: "expo.out", height: 0 });
       gsap.to("#wyrScore", {
         duration: 2,
         ease: "expo.out",
@@ -27,31 +35,69 @@ export default function PlayerScore(props: IPlayerScoreProp) {
 
   useEffect(() => {
     socket &&
-      socket.on(
+      socket.once(
         "onSelect",
         ({ selection, userId }: { selection: string; userId: string }) => {
           gsap.to(`#selection${userId}`, {
             duration: 2,
             text: selection,
           });
+          const newTotal = totalAnswered + 1;
+          setTotalAnswered(newTotal);
+
           if (selections.length > 0) {
             if (selection === selections[0]) {
               gsap.to("#left", {
                 duration: 2,
-                height: "+=" + 10,
+                height: "+=" + 20,
                 ease: "expo.out",
               });
-            } else {
+              const newArray = [...left, userId];
+              setLeft(newArray);
+            } else if (selection === selections[1]) {
               gsap.to("#right", {
                 duration: 2,
-                height: "+=" + 10,
+                height: "+=" + 20,
                 ease: "expo.out",
               });
+              const newArray = [...right, userId];
+              setRight(newArray);
             }
           }
         }
       );
-  }, [selections.length]);
+  }, [totalAnswered, left.length, right.length, selections.length]);
+
+  useEffect(() => {
+    if (
+      left.length + right.length === totalAnswered &&
+      totalAnswered === props.room.users.length
+    ) {
+      if (left.length > right.length) {
+        left.forEach(async (user) => {
+          const score = document.querySelector(`#score${user}`);
+          if (score) {
+            gsap.to(`#score${user}`, {
+              duration: 2,
+              text: `${parseInt(score.innerHTML) + 1}`,
+            });
+          }
+          props.user.creator && (await updateScore(user));
+        });
+      } else if (left.length < right.length) {
+        right.forEach(async (user) => {
+          const score = document.querySelector(`#score${user}`);
+          if (score) {
+            gsap.to(`#score${user}`, {
+              duration: 2,
+              text: `${parseInt(score.innerHTML) + 1}`,
+            });
+          }
+          props.user.creator && (await updateScore(user));
+        });
+      }
+    }
+  }, [totalAnswered, left.length, right.length]);
 
   gsap.to("#tableRows", {
     duration: 2,
@@ -77,7 +123,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
                 <tr id="tableRows">
                   <td>{user.name}</td>
                   <td id={`selection${user._id}`}></td>
-                  <td>{user.score}</td>
+                  <td id={`score${user._id}`}>{user.score}</td>
                 </tr>
               ))}
             </>

@@ -20,7 +20,6 @@ body {
 
 @keyframes gradient {
   0% {
-    color: white;
     background-position: 0% 50%;
   }
   50% {
