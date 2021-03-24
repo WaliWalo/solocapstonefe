@@ -34,17 +34,16 @@ export default function Play() {
   const [wyrModal, setWyrModal] = useState(false);
 
   const history = useHistory();
-  if (socket) {
-    socket.on("userJoined", (userId: IUserJoin) => {
-      fetchRoom(userId.userId);
-      room && fetchPlayers(room._id);
-    });
-  }
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId && socket) {
       socket.emit("userConnected", { userId });
+      socket.on("userJoined", (userId: IUserJoin) => {
+        fetchRoom(userId.userId);
+        room && fetchPlayers(room._id);
+      });
+
       socket.on(
         "onQuestionSelect",
         ({ question, nextUser }: { question: string; nextUser: IUser }) => {

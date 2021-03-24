@@ -1,6 +1,7 @@
 .playHeader {
   justify-content: center;
   color: black;
+  margin-bottom: 10px;
 }
 
 .options {
@@ -99,6 +100,14 @@
   visibility: hidden;
 }
 
+.wyrUsername {
+  text-transform: capitalize;
+}
+
+.userSelection {
+  text-transform: capitalize;
+}
+
 /* WYR Modal */
 .wyrOptions {
   height: 100%;
@@ -124,12 +133,95 @@
 /* WYR SCORE */
 #wyrScore {
   visibility: hidden;
+  display: none;
+}
+
+.wyrRow {
+  width: 100%;
+  margin: auto;
+  text-transform: capitalize;
+}
+
+#leftContainer,
+#rightContainer {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 #left {
-  background-color: yellow;
+  background: linear-gradient(
+    -45deg,
+    #f3ff00,
+    #7ae75b,
+    #00c386,
+    #009b96,
+    #007084
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: relative;
+}
+
+#leftLine {
+  background: linear-gradient(
+    -45deg,
+    #f3ff00,
+    #7ae75b,
+    #00c386,
+    #009b96,
+    #007084
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: absolute;
+  top: 0;
+  height: 10px;
+  width: 100%;
+  visibility: hidden;
 }
 
 #right {
-  background-color: blue;
+  background: linear-gradient(
+    -45deg,
+    #3600ff,
+    #0090ff,
+    #00cdff,
+    #50fbde,
+    #f7a6ff
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: relative;
+}
+
+#rightLine {
+  background: linear-gradient(
+    -45deg,
+    #3600ff,
+    #0090ff,
+    #00cdff,
+    #50fbde,
+    #f7a6ff
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: absolute;
+  top: 0;
+  height: 10px;
+  width: 100%;
+  visibility: hidden;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
