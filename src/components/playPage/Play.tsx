@@ -41,7 +41,10 @@ export default function Play() {
       socket.emit("userConnected", { userId });
       socket.on("userJoined", (userId: IUserJoin) => {
         fetchRoom(userId.userId);
-        room && fetchPlayers(room._id);
+        if (room) {
+          fetchPlayers(room._id);
+          console.log(room);
+        }
       });
 
       socket.on(
@@ -92,7 +95,9 @@ export default function Play() {
   }, []);
 
   useEffect(() => {
-    room && fetchPlayers(room._id);
+    if (room) {
+      fetchPlayers(room._id);
+    }
   }, [room]);
 
   useEffect(() => {
@@ -144,7 +149,6 @@ export default function Play() {
           setMustSpin(true);
           setTimeout(function () {
             if (currentUser !== null) {
-              console.log(currentUser);
               if (user._id === currentUser._id) {
                 setShowModal(true);
               } else {
