@@ -6,7 +6,7 @@ export default function Roulette(props: IRouletteProp) {
   const data = props.players;
 
   return (
-    <div>
+    <div id="rouletteContainer">
       <Wheel
         mustStartSpinning={props.mustSpin}
         prizeNumber={props.prizeNumber}

@@ -10,6 +10,7 @@ export interface IRoom {
 
 export interface IPlayer {
   option: string;
+  style?: object;
 }
 
 export interface IUserJoin {

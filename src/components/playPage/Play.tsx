@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { socket } from "../../utils/socket";
 import { IPlayer, IRoom, IUserJoin } from "../lobbyPage/types";
 import Message from "../message/Message";
@@ -13,7 +13,11 @@ import PlayersModal from "./PlayersModal";
 import { gsap } from "gsap";
 import { Draggable } from "gsap/Draggable";
 import "./playPage.css";
-import { ChatSquareText } from "react-bootstrap-icons";
+import {
+  ChatSquareText,
+  DoorOpenFill,
+  PersonXFill,
+} from "react-bootstrap-icons";
 import PlayerScore from "./PlayerScore";
 import WouldYouRatherModal from "./WouldYouRatherModal";
 
@@ -192,7 +196,9 @@ export default function Play() {
           if (user.turn) {
             setUserTurn(user);
           }
-          return players.push({ option: user.name });
+          return players.push({
+            option: user.name,
+          });
         });
         setPlayersDetails(users);
         setPlayers(players);
@@ -311,17 +317,19 @@ export default function Play() {
         </Row>
         <Row>
           <Col>
-            {room && room.roomType === "Truth or Dare" && (
-              <Roulette
-                prizeNumber={prizeNumber}
-                mustSpin={mustSpin}
-                stopSpin={() => setMustSpin(false)}
-                players={players}
-              />
-            )}
-            {room && room.roomType === "Would You Rather" && currentUser && (
-              <PlayerScore room={room} user={currentUser} />
-            )}
+            <div className="gameContainer">
+              {room && room.roomType === "Truth or Dare" && (
+                <Roulette
+                  prizeNumber={prizeNumber}
+                  mustSpin={mustSpin}
+                  stopSpin={() => setMustSpin(false)}
+                  players={players}
+                />
+              )}
+              {room && room.roomType === "Would You Rather" && currentUser && (
+                <PlayerScore room={room} user={currentUser} />
+              )}
+            </div>
           </Col>
         </Row>
         <Row>
@@ -339,11 +347,13 @@ export default function Play() {
                 )}
               </>
             ) : (
-              <h3>{userTurn && userTurn.name}'s turn</h3>
+              <div className="userTurn">
+                <h3>{userTurn && userTurn.name}'s turn</h3>
+              </div>
             )}
           </div>
         </Row>
-        <Row className="options mt-2">
+        <div className="options mt-2">
           {currentUser && currentUser.creator ? (
             <>
               <Button
@@ -351,30 +361,23 @@ export default function Play() {
                 onClick={handleEndGame}
                 className="mr-3"
               >
-                END GAME
+                <DoorOpenFill className="icons" />
               </Button>
+
               <Button
                 variant="outline-dark"
                 onClick={() => setPlayersModal(true)}
               >
-                Kick Player
+                <PersonXFill className="icons" />
               </Button>
             </>
           ) : (
             <Button variant="outline-dark" onClick={handleLeaveGame}>
-              LEAVE GAME
+              <DoorOpenFill className="icons" />
             </Button>
           )}
-        </Row>
-        <div className="d-flex justify-content-center">
-          <h1 className="nameAlerts">{alerts}</h1>
         </div>
-        <div className="d-flex justify-content-center">
-          <h1 className="optionAlerts">{alerts}</h1>
-        </div>
-        <div className="d-flex justify-content-center">
-          <h1 className="questionAlerts">{alerts}</h1>
-        </div>
+
         {room && (
           <>
             {currentUser && currentUser._id !== undefined && (
@@ -410,6 +413,7 @@ export default function Play() {
           </>
         )}
       </div>
+      <div id="currentUsername">{currentUser && currentUser.name}</div>
       <div id="msgBubble">
         <ChatSquareText
           style={{ display: messagePopOut ? "none" : "" }}
@@ -424,6 +428,17 @@ export default function Play() {
               minimize={handleMessageBubble}
             />
           )}
+        </div>
+      </div>
+      <div id="alertsContainer">
+        <div className="d-flex justify-content-center">
+          <h1 className="nameAlerts">{alerts}</h1>
+        </div>
+        <div className="d-flex justify-content-center">
+          <h1 className="optionAlerts">{alerts}</h1>
+        </div>
+        <div className="d-flex justify-content-center">
+          <h1 className="questionAlerts">{alerts}</h1>
         </div>
       </div>
     </>

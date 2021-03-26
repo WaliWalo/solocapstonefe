@@ -27,7 +27,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
   };
 
   useEffect(() => {
-    gsap.to("#tableRows", {
+    gsap.to(".tableRows", {
       duration: 2,
       ease: "expo.out",
       stagger: 0.5,
@@ -79,16 +79,12 @@ export default function PlayerScore(props: IPlayerScoreProp) {
       socket.once(
         "onSelect",
         ({ selection, userId }: { selection: string; userId: string }) => {
-          gsap.to(`#selection${userId}`, {
-            duration: 2,
-            text: selection,
-          });
           setTotalAnswered(totalAnswered + 1);
 
           if (selection === selections[0]) {
             gsap.to("#left", {
               duration: 2,
-              height: "+=" + 200 / props.room.users.length + "px",
+              height: "+=" + 30 / props.room.users.length + "vh",
               onStart: () => {
                 // gsap.to("#leftLine", {
                 //   ease: "sine.inOut",
@@ -97,6 +93,17 @@ export default function PlayerScore(props: IPlayerScoreProp) {
                 //   yoyo: true,
                 //   autoAlpha: 1,
                 // });
+                gsap.fromTo(
+                  `#row${userId}`,
+                  { backgroundColor: "#7ae75b" },
+                  {
+                    duration: 4,
+                    backgroundColor: "#007084",
+                    ease: "Linear.easeNone",
+                    repeat: -1,
+                    yoyo: true,
+                  }
+                );
               },
             });
 
@@ -105,7 +112,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
           } else if (selection === selections[1]) {
             gsap.to("#right", {
               duration: 2,
-              height: "+=" + 200 / props.room.users.length + "px",
+              height: "+=" + 30 / props.room.users.length + "vh",
               onStart: () => {
                 // gsap.to("#rightLine", {
                 //   delay: 0.5,
@@ -115,6 +122,17 @@ export default function PlayerScore(props: IPlayerScoreProp) {
                 //   yoyo: true,
                 //   autoAlpha: 1,
                 // });
+                gsap.fromTo(
+                  `#row${userId}`,
+                  { background: "#0090ff" },
+                  {
+                    duration: 4,
+                    backgroundColor: "#f7a6ff",
+                    ease: "Linear.easeNone",
+                    repeat: -1,
+                    yoyo: true,
+                  }
+                );
               },
             });
 
@@ -156,31 +174,33 @@ export default function PlayerScore(props: IPlayerScoreProp) {
   };
 
   return (
-    <div>
+    <div className="wyrWrapper">
       <WouldYouRatherScore selections={selections} />
-      <Table striped borderless hover size="sm" id="wyrTable">
-        <thead>
-          <tr>
-            <th>Players</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.length > 0 && (
-            <>
-              {users.map((user) => (
-                <tr id="tableRows">
-                  <td className="wyrUsername">{user.name}</td>
-                  <td
-                    id={`selection${user._id}`}
-                    className="userSelection"
-                  ></td>
-                  <td id={`score${user._id}`}>{user.score}</td>
-                </tr>
-              ))}
-            </>
-          )}
-        </tbody>
-      </Table>
+      <div className="tableContainer">
+        <Table striped borderless hover size="sm" id="wyrTable">
+          <thead>
+            <tr>
+              <th>Players</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.length > 0 && (
+              <>
+                {users.map((user) => (
+                  <tr className="tableRows" id={`row${user._id}`}>
+                    <td className="wyrUsername">{user.name}</td>
+                    <td
+                      id={`selection${user._id}`}
+                      className="userSelection"
+                    ></td>
+                    <td id={`score${user._id}`}>{user.score}</td>
+                  </tr>
+                ))}
+              </>
+            )}
+          </tbody>
+        </Table>
+      </div>
     </div>
   );
 }

@@ -78,7 +78,7 @@ export default function Home() {
     <div className="homeContainer">
       <Form onSubmit={(e) => handleJoin(e)}>
         <Row>
-          <Col md={8} xs={12}>
+          <Col md={8} sm={8} xs={12}>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
                 <InputGroup.Text id="basic-addon2">Name</InputGroup.Text>
@@ -86,7 +86,7 @@ export default function Home() {
               <FormControl
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                placeholder="Ubeyt"
+                placeholder="Player 1"
                 aria-label="Name"
                 required
               />
@@ -106,6 +106,7 @@ export default function Home() {
           </Col>
           <Col
             md={4}
+            sm={4}
             xs={12}
             className="d-flex justify-content-center mt-3 mt-sm-0"
           >

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&family=Train+One&display=swap");
 .center {
   width: 100%;
   display: flex;
@@ -6,6 +7,8 @@
 }
 
 .lobbyTitle {
+  font-size: 100px;
+  font-family: "Train One", cursive;
   font-size: 100px;
 }
 
@@ -30,7 +33,7 @@
   background: black;
   margin: 5px;
   will-change: transform;
-  color:white;
+  color: white;
   font-family: cursive;
   padding-left: 0.7rem;
   writing-mode: vertical-lr;
@@ -40,5 +43,5 @@
 
 .script-bf-box:hover {
   background: rgb(0, 241, 229);
-  cursor: default
+  cursor: default;
 }

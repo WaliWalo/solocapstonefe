@@ -6,6 +6,7 @@ import Lobby from "./components/lobbyPage/Lobby";
 import Play from "./components/playPage/Play";
 import { socket } from "./utils/socket";
 import { getRoomByUserId } from "./utils/api";
+import { gsap } from "gsap";
 
 function App() {
   useEffect(() => {
@@ -39,11 +40,13 @@ function App() {
   };
 
   return (
-    <div className="App ripple-background circle">
-      <Route path="/" exact render={(props) => <Home />} />
-      <Route path="/lobby" exact render={(props) => <Lobby />} />
-      <Route path="/play" exact render={(props) => <Play />} />
-    </div>
+    <>
+      <div className="App ripple-background circle">
+        <Route path="/" exact render={(props) => <Home />} />
+        <Route path="/lobby" exact render={(props) => <Lobby />} />
+        <Route path="/play" exact render={(props) => <Play />} />
+      </div>
+    </>
   );
 }
 

@@ -47,7 +47,11 @@ export default function QuestionsModal(props: IQuestionsModalProp) {
         backdrop="static"
       >
         <Modal.Header>
-          <Modal.Title>{props.selection.toUpperCase()}</Modal.Title>
+          <Modal.Title>
+            {props.selection === "WYR"
+              ? "Would You Rather"
+              : props.selection.toUpperCase()}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Autocomplete
