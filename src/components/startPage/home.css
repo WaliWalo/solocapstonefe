@@ -12,6 +12,10 @@
   align-items: center; */
 }
 
+.homeForm {
+  font-size: x-large;
+}
+
 .createBtn {
   justify-content: center;
 }

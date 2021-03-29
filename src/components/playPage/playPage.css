@@ -277,9 +277,19 @@
   }
 }
 
-.bhdLno {
-  width: 300px !important;
-  height: 300px !important;
+@media all and (max-width: 1080px) and (max-height: 600px) {
+  /* CSS rules here for screens lower than 750px */
+  .bhdLno {
+    width: 250px !important;
+    height: 250px !important;
+  }
+
+  @media all and (orientation: landscape) {
+    .bhdLno {
+      width: 13rem !important;
+      height: 13rem !important;
+    }
+  }
 }
 
 @media only screen and (max-width: 700px) {

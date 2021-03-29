@@ -6,6 +6,7 @@ import { createUser, getRoomByUserId } from "./../../utils/api";
 import { useHistory } from "react-router";
 import { socket } from "../../utils/socket";
 import { IHomeJoinMessage } from "./types";
+import { gsap } from "gsap";
 
 export default function Home() {
   const [show, setShow] = useState(false);
@@ -81,7 +82,9 @@ export default function Home() {
           <Col md={8} sm={8} xs={12}>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
-                <InputGroup.Text id="basic-addon2">Name</InputGroup.Text>
+                <InputGroup.Text id="basic-addon2" className="homeForm">
+                  Name
+                </InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
                 value={userName}
@@ -89,13 +92,17 @@ export default function Home() {
                 placeholder="Player 1"
                 aria-label="Name"
                 required
+                className="homeForm"
               />
             </InputGroup>
             <InputGroup>
               <InputGroup.Prepend>
-                <InputGroup.Text id="basic-addon1">Room ID</InputGroup.Text>
+                <InputGroup.Text id="basic-addon1" className="homeForm">
+                  Room ID
+                </InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
+                className="homeForm"
                 value={roomName}
                 onChange={(e) => setRoomName(e.target.value)}
                 placeholder="APVME"
@@ -110,7 +117,7 @@ export default function Home() {
             xs={12}
             className="d-flex justify-content-center mt-3 mt-sm-0"
           >
-            <Button variant="outline-dark" type="submit" className="ml-3">
+            <Button variant="dark" type="submit" className="ml-3" size="lg">
               Join Room
             </Button>
           </Col>
@@ -118,7 +125,7 @@ export default function Home() {
       </Form>
       <hr className="my-5"></hr>
       <div className="createRoomBtn">
-        <Button variant="outline-dark" onClick={handleShow}>
+        <Button variant="dark" size="lg" onClick={handleShow}>
           Create Room
         </Button>
       </div>
