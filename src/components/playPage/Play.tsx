@@ -40,6 +40,14 @@ export default function Play() {
   const history = useHistory();
 
   useEffect(() => {
+    gsap.to("#overlay", {
+      delay: 1,
+      duration: 2,
+      left: "130vw",
+      ease: "power2",
+      onComplete: () => gsap.to("#overlay", { clearProps: "all" }),
+    });
+
     const userId = localStorage.getItem("userId");
     if (userId && socket) {
       socket.emit("userConnected", { userId });

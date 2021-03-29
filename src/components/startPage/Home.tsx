@@ -39,6 +39,14 @@ export default function Home() {
           console.log(message.msg);
         }
       });
+
+    return function componentUnmount() {
+      gsap.to("#overlay", {
+        duration: 1,
+        left: "50vw",
+        ease: "power2",
+      });
+    };
   }, []);
 
   const handleJoin = async (e: React.FormEvent) => {
@@ -77,6 +85,12 @@ export default function Home() {
 
   return (
     <div className="homeContainer">
+      <video autoPlay muted loop id="myVideo">
+        <source
+          src="https://res.cloudinary.com/waliwalo/video/upload/v1617028507/solocap/Abstract_animation_pipelines_back_ground_kqhszo.mp4"
+          type="video/mp4"
+        />
+      </video>
       <Form onSubmit={(e) => handleJoin(e)}>
         <Row>
           <Col md={8} sm={8} xs={12}>
@@ -117,17 +131,17 @@ export default function Home() {
             xs={12}
             className="d-flex justify-content-center mt-3 mt-sm-0"
           >
-            <Button variant="dark" type="submit" className="ml-3" size="lg">
-              Join Room
-            </Button>
+            <div className="createRoomBtn">
+              <button type="submit" className="ml-3">
+                Join Room
+              </button>
+            </div>
           </Col>
         </Row>
       </Form>
       <hr className="my-5"></hr>
       <div className="createRoomBtn">
-        <Button variant="dark" size="lg" onClick={handleShow}>
-          Create Room
-        </Button>
+        <button onClick={handleShow}>Create Room</button>
       </div>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>

@@ -8,6 +8,7 @@ import { useHistory } from "react-router";
 import { getRoomByUserId, getUsersByRoomId } from "./../../utils/api";
 import { IUser } from "./../../utils/types";
 import Players from "./Players";
+import { gsap } from "gsap";
 
 export default function Lobby() {
   const [room, setRoom] = useState<IRoom | null>(null);
@@ -31,6 +32,13 @@ export default function Lobby() {
   }
 
   useEffect(() => {
+    gsap.to("#overlay", {
+      delay: 1,
+      duration: 2,
+      left: "130vw",
+      ease: "power2",
+      onComplete: () => gsap.to("#overlay", { clearProps: "all" }),
+    });
     const userId = localStorage.getItem("userId");
     if (userId && socket) {
       socket.emit("userConnected", { userId });
@@ -42,6 +50,13 @@ export default function Lobby() {
     } else {
       history.push("/");
     }
+    return function componentUnmount() {
+      gsap.to("#overlay", {
+        duration: 1,
+        left: "50vw",
+        ease: "power2",
+      });
+    };
   }, []);
 
   useEffect(() => {
