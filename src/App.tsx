@@ -9,6 +9,7 @@ import { getRoomByUserId } from "./utils/api";
 import { gsap } from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 import { Row } from "react-bootstrap";
+import Overlay from "./components/overlay/Overlay";
 
 function App() {
   gsap.registerPlugin(TextPlugin);
@@ -86,6 +87,7 @@ function App() {
           <Route path="/" exact render={(props) => <Home />} />
           <Route path="/lobby" exact render={(props) => <Lobby />} />
           <Route path="/play" exact render={(props) => <Play />} />
+          <Overlay />
         </div>
         <div id="loader">
           <div id="boxesContainer">
