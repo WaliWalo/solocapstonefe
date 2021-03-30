@@ -41,11 +41,12 @@ export default function Play() {
 
   useEffect(() => {
     gsap.to("#overlay", {
-      delay: 1,
-      duration: 2,
-      left: "130vw",
+      delay: 2,
+      duration: 5,
+      left: "-200vw",
       ease: "power2",
-      onComplete: () => gsap.to("#overlay", { clearProps: "all" }),
+      onComplete: () =>
+        gsap.to("#overlay", { clearProps: "all", className: "#overlay" }),
     });
 
     const userId = localStorage.getItem("userId");
@@ -344,9 +345,9 @@ export default function Play() {
           <div className="center">
             {currentUser && currentUser.turn ? (
               <>
-                {room && room.roomType === "Truth or Dare" && (
-                  <div id="spin"></div>
-                )}
+                {room &&
+                  room.roomType === "Truth or Dare" &&
+                  room.users.length > 1 && <div id="spin"></div>}
                 {room && room.roomType === "Would You Rather" && (
                   <div id="start">
                     <div id="startToggle"></div>
@@ -371,13 +372,14 @@ export default function Play() {
               >
                 <DoorOpenFill className="icons" />
               </Button>
-
-              <Button
-                variant="outline-dark"
-                onClick={() => setPlayersModal(true)}
-              >
-                <PersonXFill className="icons" />
-              </Button>
+              {room && room.users.length > 1 && (
+                <Button
+                  variant="outline-dark"
+                  onClick={() => setPlayersModal(true)}
+                >
+                  <PersonXFill className="icons" />
+                </Button>
+              )}
             </>
           ) : (
             <Button variant="outline-dark" onClick={handleLeaveGame}>

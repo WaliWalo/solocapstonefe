@@ -95,6 +95,7 @@ export default function Message(props: IMessageProp) {
         url,
       });
     setMessage("");
+    setUrl("");
   };
 
   const handleFileSelected = async (e: React.FormEvent<HTMLInputElement>) => {
@@ -108,6 +109,13 @@ export default function Message(props: IMessageProp) {
       if (response) {
         let url = await response.json();
         setUrl(url.imageUrl);
+        const adminMsg = {
+          content: "Image ready to send",
+          roomId: props.room._id,
+          sender: props.room.users[0],
+          admin: true,
+        };
+        setMessages(messages.concat(adminMsg));
         setImageLoading(false);
       } else {
         return response;
@@ -157,11 +165,17 @@ export default function Message(props: IMessageProp) {
         </Row>
         <Row>
           {imageLoading ? (
-            <div className="msgLoader">
+            <div className="msgLoader center">
               <Spinner animation="grow" />
             </div>
           ) : (
             <Form className="sendMessageForm" onSubmit={(e) => handleSubmit(e)}>
+              {url !== "" && (
+                <div id="imagePreview">
+                  <Image src={url} rounded />
+                </div>
+              )}
+
               <Row style={{ width: "100%" }}>
                 <Col xs={10} className="pr-0">
                   <InputGroup className="mb-3">
@@ -191,7 +205,7 @@ export default function Message(props: IMessageProp) {
                     />
                   </Form.File>
                   <label htmlFor="custom-file-translate-scss">
-                    <CardImage size={30} className="mt-1" />
+                    <CardImage size={30} className="mt-1" id="attachmentIcon" />
                   </label>
                 </Col>
               </Row>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, ListGroup, Modal } from "react-bootstrap";
+import { PersonXFill } from "react-bootstrap-icons";
 import { socket } from "../../utils/socket";
 import { IPlayersModalProp } from "./types";
 
@@ -29,15 +30,15 @@ export default function PlayersModal(props: IPlayersModalProp) {
                     className="d-flex justify-content-between"
                   >
                     {player.name}
-                    <Button
-                      variant="outline-dark"
+                    <button
                       id={player._id}
                       onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
                         handleKick(e)
                       }
+                      className="kickBtn"
                     >
-                      Kick
-                    </Button>
+                      <PersonXFill size={30} />
+                    </button>
                   </ListGroup.Item>
                 );
               }
@@ -45,9 +46,9 @@ export default function PlayersModal(props: IPlayersModalProp) {
           </ListGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={props.onHide}>
+          <button className="kickModalBtn" onClick={props.onHide}>
             Close
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </div>

@@ -94,11 +94,11 @@ export default function PlayerScore(props: IPlayerScoreProp) {
                 //   autoAlpha: 1,
                 // });
                 gsap.fromTo(
-                  `#row${userId}`,
-                  { backgroundColor: "#7ae75b" },
+                  `#username${userId}`,
+                  { color: "#7ae75b" },
                   {
                     duration: 4,
-                    backgroundColor: "#007084",
+                    color: "#f3ff00",
                     ease: "Linear.easeNone",
                     repeat: -1,
                     yoyo: true,
@@ -123,11 +123,11 @@ export default function PlayerScore(props: IPlayerScoreProp) {
                 //   autoAlpha: 1,
                 // });
                 gsap.fromTo(
-                  `#row${userId}`,
-                  { background: "#0090ff" },
+                  `#username${userId}`,
+                  { color: "#ff0000" },
                   {
                     duration: 4,
-                    backgroundColor: "#f7a6ff",
+                    color: "#e786c8",
                     ease: "Linear.easeNone",
                     repeat: -1,
                     yoyo: true,
@@ -177,7 +177,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
     <div className="wyrWrapper">
       <WouldYouRatherScore selections={selections} />
       <div className="tableContainer">
-        <Table striped borderless hover size="sm" id="wyrTable">
+        <Table borderless size="sm" id="wyrTable">
           <thead>
             <tr>
               <th>Players</th>
@@ -188,7 +188,9 @@ export default function PlayerScore(props: IPlayerScoreProp) {
               <>
                 {users.map((user) => (
                   <tr className="tableRows" id={`row${user._id}`}>
-                    <td className="wyrUsername">{user.name}</td>
+                    <td className="wyrUsername">
+                      <span id={`username${user._id}`}>{user.name}</span>
+                    </td>
                     <td
                       id={`selection${user._id}`}
                       className="userSelection"

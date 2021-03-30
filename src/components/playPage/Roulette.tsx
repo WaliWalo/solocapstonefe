@@ -11,9 +11,9 @@ export default function Roulette(props: IRouletteProp) {
         mustStartSpinning={props.mustSpin}
         prizeNumber={props.prizeNumber}
         data={data}
-        backgroundColors={["red"]}
-        textColors={["white"]}
-        radiusLineColor="white"
+        backgroundColors={["#5FFBF1"]}
+        textColors={["#3d2d89"]}
+        radiusLineColor="black"
         perpendicularText={true}
         onStopSpinning={() => props.stopSpin !== undefined && props.stopSpin()}
       />

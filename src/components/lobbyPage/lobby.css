@@ -12,10 +12,6 @@
   font-size: 100px;
 }
 
-.startBtn {
-  font-size: 30px;
-}
-
 .script-bf-main {
   position: relative;
   width: 100%;
@@ -28,20 +24,38 @@
 }
 
 .script-bf-box {
-  width: 50px;
+  width: 3rem;
   height: auto;
-  background: black;
+  background-image: linear-gradient(
+    to right top,
+    #ff0000,
+    #ff1331,
+    #ff2b4f,
+    #ff406a,
+    #f95481,
+    #f86293,
+    #f670a4,
+    #f27db3,
+    #f68bc5,
+    #fa99d6,
+    #fda8e7,
+    #ffb6f7
+  );
   margin: 5px;
   will-change: transform;
   color: white;
   font-family: cursive;
-  padding-left: 0.7rem;
+  /* padding-left: 0.7rem; */
   writing-mode: vertical-lr;
   text-orientation: upright;
   border-radius: 10px;
 }
 
 .script-bf-box:hover {
-  background: rgb(0, 241, 229);
+  /* background: rgb(0, 241, 229); */
   cursor: default;
+}
+
+.script-bf-box > span {
+  font-size: 2rem;
 }

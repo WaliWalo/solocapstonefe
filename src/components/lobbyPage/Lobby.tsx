@@ -27,18 +27,22 @@ export default function Lobby() {
       room && fetchPlayers(room._id);
     });
     socket.on("gameStarting", (msg: object) => {
-      history.push("/play");
+      gsap.to("#overlay", {
+        duration: 3,
+        left: "130vw",
+        ease: "power2",
+        onComplete: () =>
+          gsap.to("#overlay", {
+            className: "flip",
+            onComplete: () => {
+              history.push("/play");
+            },
+          }),
+      });
     });
   }
 
   useEffect(() => {
-    gsap.to("#overlay", {
-      delay: 1,
-      duration: 2,
-      left: "130vw",
-      ease: "power2",
-      onComplete: () => gsap.to("#overlay", { clearProps: "all" }),
-    });
     const userId = localStorage.getItem("userId");
     if (userId && socket) {
       socket.emit("userConnected", { userId });
@@ -50,13 +54,6 @@ export default function Lobby() {
     } else {
       history.push("/");
     }
-    return function componentUnmount() {
-      gsap.to("#overlay", {
-        duration: 1,
-        left: "50vw",
-        ease: "power2",
-      });
-    };
   }, []);
 
   useEffect(() => {
@@ -104,7 +101,18 @@ export default function Lobby() {
         userId: localStorage.getItem("userId"),
         roomName: room.roomName,
       });
-    history.push("/play");
+    gsap.to("#overlay", {
+      duration: 2,
+      left: "130vw",
+      ease: "power2",
+      onComplete: () =>
+        gsap.to("#overlay", {
+          className: "flip",
+          onComplete: () => {
+            history.push("/play");
+          },
+        }),
+    });
   };
 
   return (
@@ -113,18 +121,14 @@ export default function Lobby() {
         <h1 className="lobbyTitle">{room && room.roomName}</h1>
       </div>
       {players.length > 0 && <Players players={players} />}
-      {/* {players.length > 0 && (
-        <Roulette mustSpin={false} prizeNumber={0} players={players} />
-      )} */}
+
       <div className="center">
         {currentUser && currentUser.creator && (
-          <Button
-            variant="outline-dark"
-            onClick={handleStart}
-            className="mt-3 startBtn"
-          >
-            Start
-          </Button>
+          <div className="createRoomBtn">
+            <button onClick={handleStart} className="mt-3 startBtn">
+              Start
+            </button>
+          </div>
         )}
       </div>
     </div>

@@ -6,7 +6,45 @@
 }
 
 body {
-  color: white;
+  /* color: white; */
+}
+
+.modal-dialog {
+  min-width: fit-content;
+}
+
+.modal-content {
+  background-image: linear-gradient(
+    to right top,
+    #1100f4,
+    #0043fe,
+    #0063ff,
+    #007dfd,
+    #4795f6,
+    #48a6f8,
+    #57b6f8,
+    #6fc5f6,
+    #5cd4fc,
+    #4fe1fd,
+    #4eeff9,
+    #5ffbf1
+  ) !important;
+  border-radius: 3em !important;
+  font-family: "Indie Flower";
+  min-width: fit-content !important;
+}
+
+.modal-header {
+  border-bottom: none !important;
+}
+
+.modal-title {
+  font-weight: 900;
+  font-size: 2.3rem;
+}
+
+.modal-footer {
+  border-top: none !important;
 }
 
 #background {
@@ -22,8 +60,23 @@ body {
   width: 100%;
 }
 
+video {
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+  z-index: -1;
+}
+
 #loader {
-  /* background-color: black; */
+  background: linear-gradient(
+    45deg,
+    rgba(0, 71, 255, 1) 0%,
+    rgba(130, 127, 172, 1) 100%
+  );
   height: 100%;
   width: 100%;
   position: absolute;
@@ -31,28 +84,35 @@ body {
   top: 0px;
 }
 
-#loader > h1 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+#party {
+  width: 30vw;
   position: absolute;
-  right: 50%;
+  top: 30%;
+  left: -100%;
+}
+
+#games {
+  width: 30vw;
+  position: absolute;
+  top: 60%;
+  left: -100%;
+}
+
+/* #logo {
+  position: absolute;
+  top: 50%;
   left: 50%;
-  z-index: 5000;
-}
+  transform: translate(-50%, -50%);
+  animation: 5s fadein forwards;
+} */
 
-#boxesContainer {
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  min-height: 100%;
-  min-width: 100%;
-}
-
-.boxes {
-  flex: 1;
-  height: 5rem;
-  width: 5rem;
-  background-color: black;
-}
+/* @keyframes fadein {
+  0% {
+    opacity: 0;
+    filter: blur(120px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+} */

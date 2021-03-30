@@ -38,9 +38,8 @@ export default function WouldYouRatherModal(props: IWyrProp) {
             <Row>
               <Col xs={12} md={5}>
                 <Button
-                  className="wyrOptions"
+                  className="wyrOptions leftOption"
                   id={options[0]}
-                  variant="outline-warning"
                   onClick={(e) => handleSelect(e)}
                 >
                   {options[0]}
@@ -51,9 +50,8 @@ export default function WouldYouRatherModal(props: IWyrProp) {
               </Col>
               <Col xs={12} md={5}>
                 <Button
-                  className="wyrOptions"
+                  className="wyrOptions rightOption"
                   id={options[1]}
-                  variant="outline-info"
                   onClick={(e) => handleSelect(e)}
                 >
                   {options[1]}

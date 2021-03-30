@@ -5,6 +5,11 @@
   height: 100%;
   border-radius: 10%;
   background-color: rgb(255, 255, 255);
+  padding: 1em;
+}
+
+.messageContainer > .row:first-child:hover {
+  cursor: pointer;
 }
 
 .messageContent {
@@ -107,4 +112,18 @@
 .sendMessageForm {
   padding-left: 5%;
   width: 100%;
+}
+
+#imagePreview {
+  position: absolute;
+  bottom: 3.6em;
+}
+
+#imagePreview > img {
+  width: 6em;
+  opacity: 0.7;
+}
+
+#attachmentIcon:hover {
+  cursor: pointer;
 }

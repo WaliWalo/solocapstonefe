@@ -2,7 +2,6 @@
 
 .playHeader {
   justify-content: center;
-  color: black;
   margin-bottom: 10px;
 }
 
@@ -30,14 +29,47 @@
 }
 
 .options button {
-  height: 7vh;
-  width: 7vw;
+  height: 5em;
+  width: 5em;
   padding: 1px;
+  border-radius: 100%;
+}
+
+.list-group-item {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
+  font-family: "Indie Flower", cursive;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.kickBtn {
+  background-color: transparent !important;
+  border: none;
+}
+
+.kickModalBtn {
+  padding: 0em 1em;
+  border-radius: 3em;
+  font-size: 2em;
+  color: #3d2d89;
+  background-color: #ffffffc2;
+  font-weight: 900;
+  border: none;
+  transition: 0.4s all;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.kickModalBtn:hover {
+  filter: drop-shadow(0px 0px 15px white);
 }
 
 .icons {
   height: 5vh;
   width: 5vw;
+  fill: white;
 }
 
 #rouletteContainer {
@@ -49,15 +81,59 @@
   padding: 10px;
 }
 
+div.sc-dlfnbm.giJnqb + img {
+  filter: hue-rotate(309deg);
+}
+
 #spin {
   width: 50px;
   height: 50px;
-  background-color: red;
+  background-color: #e43da0;
   border: solid;
   border-radius: 100px;
   z-index: 999;
 }
 
+/* TRUTH OR DARE MODAL */
+.todBtn {
+  padding: 0.8em 2em;
+  border-radius: 3em;
+  font-size: 2em;
+  font-weight: 900;
+  border: none;
+  transition: 0.4s all;
+  cursor: pointer;
+  opacity: 0.8;
+  margin: 1em;
+}
+
+#truth {
+  color: #fafafa;
+  background-color: #160757c2;
+}
+
+#orTxt {
+  font-size: 5em;
+  font-weight: 900;
+}
+
+#dare {
+  color: #fafafa;
+  background-color: #ff0000;
+}
+
+.todBtn:hover {
+  filter: drop-shadow(0px 0px 15px white);
+}
+
+/* QUESTIONS MODAL */
+#combo-box-demo {
+  width: 100%;
+  font-size: 2em;
+  font-family: "Indie Flower";
+}
+
+/* WOULD YOU RATHER START */
 #start {
   display: flex;
   width: 200px;
@@ -69,6 +145,7 @@
   padding: 2px;
   position: absolute;
   bottom: 15px;
+  font-family: "Indie Flower", cursive;
 }
 
 #startToggle {
@@ -90,6 +167,7 @@
 #alertsContainer {
   position: absolute;
   bottom: 0;
+  width: 100%;
 }
 
 .nameAlerts {
@@ -127,9 +205,9 @@
 #currentUsername {
   position: absolute;
   left: 15px;
-  bottom: 10px;
+  bottom: 0px;
   font-family: "Indie Flower", cursive;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 600;
 }
 
@@ -144,6 +222,10 @@
   bottom: 1%;
   right: 1%;
   color: black;
+}
+
+#msgBubble > svg:hover {
+  cursor: pointer;
 }
 
 #chatLogo {
@@ -182,12 +264,33 @@
 
 /* WYR Modal */
 .wyrOptions {
-  height: 100%;
   text-transform: capitalize;
   text-align: center;
   text-justify: auto;
+  padding: 0.8em 2em;
+  border-radius: 3em;
+  font-size: 2em;
+  font-weight: 900;
+  border: none;
+  transition: 0.4s all;
+  cursor: pointer;
+  opacity: 0.8;
   width: 100%;
-  /* width: 100%; */
+}
+
+.wyrOptions:hover {
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+.leftOption {
+  color: #fafafa;
+  background: linear-gradient(-45deg, #f3ff00, #7ae75b, #00c386);
+}
+
+.rightOption {
+  color: #fafafa;
+  background: linear-gradient(-45deg, #e786c8, #ef6f6f, #ff0000);
 }
 
 .or {
@@ -289,12 +392,21 @@
       width: 13rem !important;
       height: 13rem !important;
     }
+    .options button {
+      height: 4em;
+      width: 4em;
+      padding: 1px;
+      border-radius: 100%;
+    }
   }
 }
 
 @media only screen and (max-width: 700px) {
   .options button {
-    border: none;
+    height: 3em;
+    width: 3em;
+    padding: 1px;
+    border-radius: 100%;
   }
 
   #start {
@@ -334,14 +446,7 @@
 }
 
 #left {
-  background: linear-gradient(
-    -45deg,
-    #f3ff00,
-    #7ae75b,
-    #00c386,
-    #009b96,
-    #007084
-  );
+  background: linear-gradient(-45deg, #f3ff00, #7ae75b, #00c386);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   position: relative;
@@ -349,14 +454,7 @@
 }
 
 #leftLine {
-  background: linear-gradient(
-    -45deg,
-    #f3ff00,
-    #7ae75b,
-    #00c386,
-    #009b96,
-    #007084
-  );
+  background: linear-gradient(-45deg, #f3ff00, #7ae75b, #00c386);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   position: absolute;
@@ -367,14 +465,7 @@
 }
 
 #right {
-  background: linear-gradient(
-    -45deg,
-    #3600ff,
-    #0090ff,
-    #00cdff,
-    #50fbde,
-    #f7a6ff
-  );
+  background: linear-gradient(-45deg, #e786c8, #ef6f6f, #ff0000);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   position: relative;
@@ -382,14 +473,7 @@
 }
 
 #rightLine {
-  background: linear-gradient(
-    -45deg,
-    #3600ff,
-    #0090ff,
-    #00cdff,
-    #50fbde,
-    #f7a6ff
-  );
+  background: linear-gradient(-45deg, #e786c8, #ef6f6f, #ff0000);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   position: absolute;

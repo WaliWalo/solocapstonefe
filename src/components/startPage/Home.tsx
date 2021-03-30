@@ -42,7 +42,7 @@ export default function Home() {
 
     return function componentUnmount() {
       gsap.to("#overlay", {
-        duration: 1,
+        duration: 3,
         left: "50vw",
         ease: "power2",
       });
@@ -85,12 +85,6 @@ export default function Home() {
 
   return (
     <div className="homeContainer">
-      <video autoPlay muted loop id="myVideo">
-        <source
-          src="https://res.cloudinary.com/waliwalo/video/upload/v1617028507/solocap/Abstract_animation_pipelines_back_ground_kqhszo.mp4"
-          type="video/mp4"
-        />
-      </video>
       <Form onSubmit={(e) => handleJoin(e)}>
         <Row>
           <Col md={8} sm={8} xs={12}>
@@ -158,6 +152,7 @@ export default function Home() {
                     aria-label="Your name"
                     aria-describedby="basic-addon2"
                     value={name}
+                    className="createRoomForm"
                     onChange={(e) => setName(e.target.value)}
                   />
                 </Col>
@@ -166,6 +161,7 @@ export default function Home() {
                     <Form.Control
                       as="select"
                       required
+                      className="selectForm"
                       onChange={(e) => setGame(e.target.value)}
                     >
                       <option>Truth or Dare</option>
@@ -175,13 +171,10 @@ export default function Home() {
                 </Col>
               </InputGroup>
             </Row>
-            {/* <Container id="cardContainer">
-              <Cards />
-            </Container> */}
-            <Row className="mt-3 createBtn">
-              <Button variant="outline-dark" type="submit">
+            <Row className="mt-3 createRoomBtn">
+              <button type="submit" className="startBtn">
                 Start Game
-              </Button>
+              </button>
             </Row>
           </Form>
         </Modal.Body>

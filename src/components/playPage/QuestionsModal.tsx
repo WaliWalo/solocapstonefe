@@ -58,7 +58,6 @@ export default function QuestionsModal(props: IQuestionsModalProp) {
             id="combo-box-demo"
             options={questions}
             getOptionLabel={(option) => option.content}
-            style={{ width: "100%" }}
             inputValue={selectedQuestion}
             onInputChange={(event, newInputValue) =>
               setSelectedQuestion(newInputValue)
@@ -74,9 +73,9 @@ export default function QuestionsModal(props: IQuestionsModalProp) {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleSubmit}>
+          <button className="kickModalBtn" onClick={handleSubmit}>
             Select {props.selection}
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </div>

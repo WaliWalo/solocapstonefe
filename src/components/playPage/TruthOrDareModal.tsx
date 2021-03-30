@@ -34,25 +34,25 @@ export default function TruthOrDareModal(props: ITodModalProp) {
         <Modal.Body>
           <Row>
             <Col className="center" xs={5}>
-              <Button
-                variant="outline-dark"
+              <button
                 id="truth"
+                className="todBtn"
                 onClick={(e) => handleSelect(e)}
               >
                 TRUTH
-              </Button>
+              </button>
             </Col>
-            <Col className="center" xs={2}>
+            <Col className="center" id="orTxt" xs={2}>
               OR
             </Col>
             <Col className="center" xs={5}>
-              <Button
-                variant="outline-dark"
+              <button
+                className="todBtn"
                 id="dare"
                 onClick={(e) => handleSelect(e)}
               >
                 DARE
-              </Button>
+              </button>
             </Col>
           </Row>
         </Modal.Body>

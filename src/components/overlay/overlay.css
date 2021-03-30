@@ -7,6 +7,13 @@
   z-index: -1;
 }
 
+.flip {
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
 #overlayImg {
   height: 50vh;
   width: 100%;
