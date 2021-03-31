@@ -80,7 +80,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
         "onSelect",
         ({ selection, userId }: { selection: string; userId: string }) => {
           setTotalAnswered(totalAnswered + 1);
-
+          console.log(selection);
           if (selection === selections[0]) {
             gsap.to("#left", {
               duration: 2,
