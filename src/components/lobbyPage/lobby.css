@@ -24,7 +24,7 @@
 }
 
 .script-bf-box {
-  width: 3rem;
+  width: 2rem;
   height: auto;
   background-image: linear-gradient(
     to right top,
@@ -57,5 +57,5 @@
 }
 
 .script-bf-box > span {
-  font-size: 2rem;
+  font-size: 2.7vh;
 }

@@ -17,13 +17,13 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    if (socket) {
-      socket.on("connect", () => {
-        if (socket) {
-          console.log(socket.id);
-        }
-      });
-    }
+    // if (socket) {
+    //   socket.on("connect", () => {
+    //     if (socket) {
+    //       console.log(socket.id);
+    //     }
+    //   });
+    // }
     const userId = localStorage.getItem("userId");
     if (userId) {
       checkIfUserBelongToAnyRoom(userId);

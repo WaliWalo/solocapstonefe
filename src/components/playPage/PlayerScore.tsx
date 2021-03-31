@@ -139,6 +139,13 @@ export default function PlayerScore(props: IPlayerScoreProp) {
             const newArray = [...right, userId];
             setRight(newArray);
           }
+
+          if (
+            totalAnswered === props.room.users.length &&
+            totalAnswered === left.length + right.length
+          ) {
+            fetchRoom(userId);
+          }
         }
       );
     }
@@ -148,13 +155,13 @@ export default function PlayerScore(props: IPlayerScoreProp) {
     ) {
       if (left.length > right.length) {
         left.forEach(async (user) => {
-          fetchRoom(user);
           props.user.creator && (await updateScore(user));
+          fetchRoom(user);
         });
       } else if (left.length < right.length) {
         right.forEach(async (user) => {
-          fetchRoom(user);
           props.user.creator && (await updateScore(user));
+          fetchRoom(user);
         });
       }
       sortUsers(props.room.users);

@@ -2,7 +2,6 @@ import { IUser } from "./types";
 
 export const createUser = async (user: IUser) => {
   try {
-    console.log(process.env.REACT_APP_BE_URL);
     const response = await fetch(`${process.env.REACT_APP_BE_URL}/users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
