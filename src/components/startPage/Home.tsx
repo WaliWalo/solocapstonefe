@@ -18,6 +18,7 @@ export default function Home() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   let history = useHistory();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const response = await createUser({ name, creator: true, turn: true });
@@ -112,7 +113,7 @@ export default function Home() {
               <FormControl
                 className="homeForm"
                 value={roomName}
-                onChange={(e) => setRoomName(e.target.value)}
+                onChange={(e) => setRoomName(e.target.value.toUpperCase())}
                 placeholder="APVME"
                 aria-label="Room Id"
                 required
@@ -145,7 +146,7 @@ export default function Home() {
           <Form onSubmit={(e) => handleSubmit(e)}>
             <Row>
               <InputGroup>
-                <Col xs={7}>
+                <Col md={7} sm={7} xs={12}>
                   <FormControl
                     required
                     placeholder="Your name"
@@ -156,7 +157,7 @@ export default function Home() {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </Col>
-                <Col xs={5}>
+                <Col md={4} sm={4} xs={12}>
                   <Form.Group>
                     <Form.Control
                       as="select"

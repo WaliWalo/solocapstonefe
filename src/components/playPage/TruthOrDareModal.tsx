@@ -33,7 +33,7 @@ export default function TruthOrDareModal(props: ITodModalProp) {
         </Modal.Header>
         <Modal.Body>
           <Row>
-            <Col className="center" xs={5}>
+            <Col className="center" xs={12} md={5}>
               <button
                 id="truth"
                 className="todBtn"
@@ -42,10 +42,10 @@ export default function TruthOrDareModal(props: ITodModalProp) {
                 TRUTH
               </button>
             </Col>
-            <Col className="center" id="orTxt" xs={2}>
+            <Col className="center" xs={12} id="orTxt" md={2}>
               OR
             </Col>
-            <Col className="center" xs={5}>
+            <Col className="center" xs={12} md={5}>
               <button
                 className="todBtn"
                 id="dare"

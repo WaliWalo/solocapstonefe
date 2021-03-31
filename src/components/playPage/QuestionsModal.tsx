@@ -48,7 +48,7 @@ export default function QuestionsModal(props: IQuestionsModalProp) {
       >
         <Modal.Header>
           <Modal.Title>
-            {props.selection === "WYR"
+            {props.selection === "wyr"
               ? "Would You Rather"
               : props.selection.toUpperCase()}
           </Modal.Title>
@@ -74,7 +74,7 @@ export default function QuestionsModal(props: IQuestionsModalProp) {
         </Modal.Body>
         <Modal.Footer>
           <button className="kickModalBtn" onClick={handleSubmit}>
-            Select {props.selection}
+            Select
           </button>
         </Modal.Footer>
       </Modal>
