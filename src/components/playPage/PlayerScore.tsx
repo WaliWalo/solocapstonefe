@@ -154,17 +154,18 @@ export default function PlayerScore(props: IPlayerScoreProp) {
         left.forEach(async (user) => {
           props.user.creator && (await updateScore(user));
           fetchRoom(user);
-        });
+        }); //Just using onSelect event to prompt user to update score
+        socket &&
+          socket.emit("onSelect", { selection: "", roomName: "", userId: "" });
       } else if (left.length < right.length) {
         right.forEach(async (user) => {
           props.user.creator && (await updateScore(user));
           fetchRoom(user);
-        });
+        }); //Just using onSelect event to prompt user to update score
+        socket &&
+          socket.emit("onSelect", { selection: "", roomName: "", userId: "" });
       }
       sortUsers(props.room.users);
-      //Just using onSelect event to prompt user to update score
-      socket &&
-        socket.emit("onSelect", { selection: "", roomName: "", userId: "" });
     }
   }, [totalAnswered, left.length, right.length, selections.length]);
 
