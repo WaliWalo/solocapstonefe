@@ -64,6 +64,17 @@ export default function PlayerScore(props: IPlayerScoreProp) {
         });
       });
 
+      //FOR END TURN
+      socket.on(
+        "onSelect",
+        ({ selection, userId }: { selection: string; userId: string }) => {
+          if (selection === "") {
+            console.log("Fetch room here", users);
+            fetchRoom(userId);
+          }
+        }
+      );
+
       socket.on("userJoined", (userId: IUserJoin) => {
         fetchRoom(userId.userId);
       });
@@ -80,7 +91,6 @@ export default function PlayerScore(props: IPlayerScoreProp) {
         "onSelect",
         ({ selection, userId }: { selection: string; userId: string }) => {
           setTotalAnswered(totalAnswered + 1);
-          console.log(selection);
           if (selection === selections[0]) {
             gsap.to("#left", {
               duration: 2,
@@ -138,9 +148,6 @@ export default function PlayerScore(props: IPlayerScoreProp) {
 
             const newArray = [...right, userId];
             setRight(newArray);
-          } else if (selection === "") {
-            console.log("Fetch room here", users);
-            fetchRoom(userId);
           }
         }
       );
@@ -154,18 +161,17 @@ export default function PlayerScore(props: IPlayerScoreProp) {
         left.forEach(async (user) => {
           props.user.creator && (await updateScore(user));
           fetchRoom(user);
-        }); //Just using onSelect event to prompt user to update score
-        socket &&
-          socket.emit("onSelect", { selection: "", roomName: "", userId: "" });
+        });
       } else if (left.length < right.length) {
         right.forEach(async (user) => {
           props.user.creator && (await updateScore(user));
           fetchRoom(user);
-        }); //Just using onSelect event to prompt user to update score
-        socket &&
-          socket.emit("onSelect", { selection: "", roomName: "", userId: "" });
+        });
       }
       sortUsers(props.room.users);
+      //Just using onSelect event to prompt user to update score
+      socket &&
+        socket.emit("onSelect", { selection: "", roomName: "", userId: "" });
     }
   }, [totalAnswered, left.length, right.length, selections.length]);
 
