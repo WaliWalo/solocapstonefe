@@ -69,7 +69,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
         "onSelect",
         ({ selection, userId }: { selection: string; userId: string }) => {
           console.log(selection);
-          if (selection === "") {
+          if (selection === "endTurn") {
             console.log("Fetch room here", users);
             fetchRoom(userId);
           }
@@ -157,7 +157,6 @@ export default function PlayerScore(props: IPlayerScoreProp) {
       totalAnswered === props.room.users.length &&
       totalAnswered === left.length + right.length
     ) {
-      let response: IUser;
       if (left.length > right.length) {
         left.forEach(async (user) => {
           props.user.creator && (await updateScore(user));
@@ -172,7 +171,11 @@ export default function PlayerScore(props: IPlayerScoreProp) {
       sortUsers(props.room.users);
       //Just using onSelect event to prompt user to update score
       socket &&
-        socket.emit("onSelect", { selection: "", roomName: "", userId: "" });
+        socket.emit("onSelect", {
+          selection: "endTurn",
+          roomName: "",
+          userId: "",
+        });
     }
   }, [totalAnswered, left.length, right.length, selections.length]);
 
