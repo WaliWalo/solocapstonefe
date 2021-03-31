@@ -138,12 +138,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
 
             const newArray = [...right, userId];
             setRight(newArray);
-          }
-
-          if (
-            totalAnswered === props.room.users.length &&
-            totalAnswered === left.length + right.length
-          ) {
+          } else if (selection === "") {
             fetchRoom(userId);
           }
         }
@@ -165,6 +160,9 @@ export default function PlayerScore(props: IPlayerScoreProp) {
         });
       }
       sortUsers(props.room.users);
+      //Just using onSelect event to prompt user to update score
+      socket &&
+        socket.emit("onSelect", { selection: "", roomName: "", userId: "" });
     }
   }, [totalAnswered, left.length, right.length, selections.length]);
 
