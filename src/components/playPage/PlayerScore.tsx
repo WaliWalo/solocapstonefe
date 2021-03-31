@@ -68,9 +68,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
       socket.on(
         "onSelect",
         ({ selection, userId }: { selection: string; userId: string }) => {
-          console.log(selection);
           if (selection === "endTurn") {
-            console.log("Fetch room here", users);
             fetchRoom(userId);
           }
         }
