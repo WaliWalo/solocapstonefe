@@ -173,8 +173,8 @@ export default function PlayerScore(props: IPlayerScoreProp) {
       socket &&
         socket.emit("onSelect", {
           selection: "endTurn",
-          roomName: "",
-          userId: "",
+          roomName: props.room.roomName,
+          userId: props.user._id,
         });
     }
   }, [totalAnswered, left.length, right.length, selections.length]);
