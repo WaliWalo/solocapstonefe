@@ -139,6 +139,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
             const newArray = [...right, userId];
             setRight(newArray);
           } else if (selection === "") {
+            console.log("Fetch room here", users);
             fetchRoom(userId);
           }
         }
@@ -148,6 +149,7 @@ export default function PlayerScore(props: IPlayerScoreProp) {
       totalAnswered === props.room.users.length &&
       totalAnswered === left.length + right.length
     ) {
+      let response: IUser;
       if (left.length > right.length) {
         left.forEach(async (user) => {
           props.user.creator && (await updateScore(user));
